@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Developer Portfolio
+
+A modern, animated portfolio for a Data Engineer & Frontend Developer. Built with Next.js 14, TypeScript, Tailwind CSS, Framer Motion, and D3.js.
+
+## Features
+
+- Full-viewport hero with rotating taglines
+- Interactive D3 skill galaxy / constellation
+- Project showcase cards with hover effects
+- Certification flip cards
+- Animated experience timeline
+- CTA contact section (no backend required)
+- Scroll animations with `prefers-reduced-motion` support
+- Deploy-ready for Vercel
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Customize Your Content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Search for `[REPLACE:` across the codebase. Key files:
 
-## Learn More
+| File | What to update |
+|------|----------------|
+| `src/data/site.ts` | Name, email, social links, stats |
+| `src/data/skills.ts` | Skills, categories, proficiency |
+| `src/data/projects.ts` | Projects, demo/repo URLs, images |
+| `src/data/experience.ts` | Work history |
+| `src/data/certifications.ts` | Certifications |
+| `src/app/layout.tsx` | SEO metadata |
+| `public/cv.pdf` | Your actual CV |
+| `public/og-image.svg` | Social preview image |
 
-To learn more about Next.js, take a look at the following resources:
+Add project screenshots to `public/projects/` and update `previewImage` paths in `projects.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy to Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run build
+npx vercel
+```
 
-## Deploy on Vercel
+Or connect this repo to [Vercel](https://vercel.com) for automatic deployments on push.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework:** Next.js 14 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Animation:** Framer Motion
+- **Visualization:** D3.js (force-directed graph)
+
+## Project Structure
+
+```
+src/
+├── app/           # Layout, page, globals
+├── components/    # Layout, sections, UI
+├── data/          # Content (easy to edit)
+├── hooks/         # Animation helpers
+└── lib/           # Utilities
+```
+
+## License
+
+MIT — customize freely for your personal portfolio.
