@@ -4,77 +4,69 @@ export interface Project {
   tagline: string;
   description: string;
   tags: string[];
-  demoUrl: string;
-  repoUrl: string;
+  /** If omitted, the Live Demo button is hidden. Use a same-page hash (e.g. #hero) for this site. */
+  demoUrl?: string;
+  /** If omitted, the Source Code button is hidden. */
+  repoUrl?: string;
   previewImage?: string;
   embedUrl?: string;
 }
 
 export const projects: Project[] = [
   {
-    id: "pipeline-dashboard",
-    title: "Real-Time Data Pipeline Dashboard",
-    tagline: "Streaming pipeline visualization in real-time",
+    id: "smart-laser",
+    title: "Smart Laser — Full-Stack Maintenance CRM",
+    tagline: "End-to-end technician workflows",
     description:
-      "End-to-end streaming pipeline with Kafka and Spark, visualized in real-time. Monitors throughput, lag, and error rates across distributed workers with interactive D3 charts.",
-    tags: ["Kafka", "Spark", "Python", "React", "D3.js"],
-    demoUrl: "https://example.com/pipeline-dashboard",
-    repoUrl: "https://github.com/[REPLACE: username]/pipeline-dashboard",
+      "Built a complete maintenance CRM for Perfect Laser Technologies that streamlined technician workflows end-to-end. Reduced maintenance turnaround time by 30% across the organization.",
+    tags: ["React", "PostgreSQL", "Node.js", "REST APIs"],
     previewImage: "/projects/placeholder.svg",
   },
   {
-    id: "etl-monitor",
-    title: "ETL Orchestration Monitor",
-    tagline: "Live Airflow DAG status tracking",
+    id: "ai-support",
+    title: "AI Support Ecosystem — Custom LLM-Powered Support",
+    tagline: "Automated technical support at scale",
     description:
-      "Airflow DAG monitoring dashboard with live status tracking. Surfaces task failures, retry patterns, and SLA breaches with drill-down views per DAG run.",
-    tags: ["Airflow", "Python", "PostgreSQL", "Next.js"],
-    demoUrl: "https://example.com/etl-monitor",
-    repoUrl: "https://github.com/[REPLACE: username]/etl-monitor",
+      "Engineered an AI-driven support system using a custom LLM and NLP pipeline that automated 60% of technical support queries — dramatically cutting operational overhead and response times.",
+    tags: ["Python", "Custom LLM", "NLP", "TensorFlow"],
     previewImage: "/projects/placeholder.svg",
   },
   {
-    id: "data-explorer",
-    title: "Interactive Data Explorer",
-    tagline: "Drag-and-drop SQL with instant charts",
+    id: "aurora-detect",
+    title: "Aurora Detect — Real-Time Fraud Detection System",
+    tagline: "Serverless, event-driven transaction monitoring",
     description:
-      "Drag-and-drop SQL query builder with instant chart generation. Connects to warehouses, suggests optimizations, and exports visualizations as PNG or SVG.",
-    tags: ["SQL", "React", "TypeScript", "Recharts"],
-    demoUrl: "https://example.com/data-explorer",
-    repoUrl: "https://github.com/[REPLACE: username]/data-explorer",
+      "Serverless, event-driven architecture that monitors financial transactions in real-time. Uses AWS Lambda and Kinesis to flag fraudulent activity, with DynamoDB for high-throughput storage and SNS for instant fraud alerts.",
+    tags: ["AWS Lambda", "Kinesis", "DynamoDB", "SNS", "Python"],
     previewImage: "/projects/placeholder.svg",
   },
   {
-    id: "design-system",
-    title: "Component Library / Design System",
-    tagline: "Production-ready UI with Storybook",
+    id: "dashora",
+    title: "Dashora — Multi-Site Analytics Dashboard",
+    tagline: "WooCommerce + GA4 in one view",
     description:
-      "Production-ready UI component library with Storybook docs. Accessible primitives, theming tokens, and composable patterns used across multiple product teams.",
-    tags: ["React", "TypeScript", "Tailwind", "Storybook"],
-    demoUrl: "https://example.com/design-system",
-    repoUrl: "https://github.com/[REPLACE: username]/design-system",
+      "Aggregation engine that fetches and normalizes metrics from multiple WooCommerce stores and Google Analytics v4 accounts. Secure API layer with API Gateway and Secrets Manager for multi-client credential management.",
+    tags: ["AWS Lambda", "API Gateway", "Secrets Manager", "Google Analytics v4", "WooCommerce"],
+    previewImage: "/projects/placeholder.svg",
+  },
+  {
+    id: "inventory",
+    title: "Distributed Inventory System — Multi-Branch Stock Sync",
+    tagline: "Real-time stock across branches",
+    description:
+      "Real-time inventory synchronization system across multiple retail branches. Enhanced data integrity and supply chain transparency for a national laser equipment supplier.",
+    tags: ["PHP", "PostgreSQL", "REST APIs", "Webhooks"],
     previewImage: "/projects/placeholder.svg",
   },
   {
     id: "portfolio",
-    title: "Portfolio Website",
-    tagline: "This site — built with love",
+    title: "This Portfolio — You're Looking At It",
+    tagline: "Proof in the pixels",
     description:
-      "This site! Built with Next.js, Framer Motion, and D3. Features an interactive skill galaxy, scroll animations, and a bold dark aesthetic.",
-    tags: ["Next.js", "TypeScript", "Tailwind", "Framer Motion"],
+      "Designed and built from scratch with Next.js, Framer Motion, and TypeScript. Because the portfolio itself should be proof of what I can do.",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     demoUrl: "#hero",
-    repoUrl: "https://github.com/[REPLACE: username]/portfolio",
-    previewImage: "/projects/placeholder.svg",
-  },
-  {
-    id: "custom",
-    title: "[REPLACE: Your Project Title]",
-    tagline: "[REPLACE: Short tagline]",
-    description:
-      "[REPLACE: 2-3 sentences describing what the project does and why it matters]",
-    tags: ["[REPLACE: Tech]", "Tag 2"],
-    demoUrl: "https://example.com",
-    repoUrl: "https://github.com/[REPLACE: username]/project",
+    repoUrl: "https://github.com/tariqkistan/tariqpp",
     previewImage: "/projects/placeholder.svg",
   },
 ];

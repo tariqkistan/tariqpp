@@ -348,7 +348,7 @@ export function Skills() {
             className={cn(
               "rounded-full px-4 py-1.5 text-sm font-medium transition-all",
               !selectedCategory
-                ? "bg-gradient-accent text-white"
+                ? "bg-gradient-accent text-[#0a0a0e]"
                 : "border border-white/10 bg-white/5 text-muted hover:border-white/30"
             )}
           >
@@ -364,7 +364,7 @@ export function Skills() {
               className={cn(
                 "rounded-full px-4 py-1.5 text-sm font-medium transition-all",
                 selectedCategory === cat
-                  ? "text-white"
+                  ? "text-[#0a0a0e]"
                   : "border border-white/10 bg-white/5 text-muted hover:border-white/30"
               )}
               style={
@@ -422,9 +422,9 @@ export function Skills() {
           >
             <defs>
               <linearGradient id="linkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#3b82f6" />
-                <stop offset="50%" stopColor="#8b5cf6" />
-                <stop offset="100%" stopColor="#ec4899" />
+                <stop offset="0%" stopColor="#00E5A0" />
+                <stop offset="50%" stopColor="#5eead4" />
+                <stop offset="100%" stopColor="#7dd3fc" />
               </linearGradient>
               <filter id="glow">
                 <feGaussianBlur stdDeviation="2" result="blur" />

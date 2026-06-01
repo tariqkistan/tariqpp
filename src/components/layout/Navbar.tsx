@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "#about", label: "About" },
   { href: "#skills", label: "Skills" },
   { href: "#projects", label: "Projects" },
+  { href: "#certifications", label: "Certifications" },
   { href: "#experience", label: "Experience" },
   { href: "#contact", label: "Contact" },
 ];
@@ -61,33 +60,27 @@ export function Navbar() {
         className={cn(
           "fixed top-0 z-50 w-full transition-all duration-300",
           scrolled
-            ? "border-b border-white/10 bg-black/60 backdrop-blur-xl"
+            ? "border-b border-white/[0.08] bg-[#0a0a0e]/85 backdrop-blur-xl"
             : "bg-transparent"
         )}
       >
         <nav
-          className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-8"
+          className="mx-auto flex max-w-7xl items-center justify-end px-6 py-4 md:px-8"
           aria-label="Main navigation"
         >
-          <Link
-            href="#hero"
-            className="font-display text-lg font-bold tracking-tight md:text-xl"
-          >
-            <span className="text-gradient">{siteConfig.name}</span>
-          </Link>
-
-          <ul className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center gap-6 md:flex">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-white",
+                    "font-mono text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors",
                     activeSection === link.href.slice(1)
-                      ? "text-gradient"
-                      : "text-muted"
+                      ? "border-b-2 border-accent pb-1 text-accent"
+                      : "border-b-2 border-transparent pb-1 text-muted hover:text-foreground"
                   )}
                 >
+                  {"// "}
                   {link.label}
                 </a>
               </li>

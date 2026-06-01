@@ -1,8 +1,9 @@
 export type SkillCategory =
-  | "Data Engineering"
-  | "Frontend"
+  | "Languages & Frameworks"
+  | "AI & Data"
   | "Cloud & DevOps"
-  | "Databases";
+  | "Databases"
+  | "Tools & Platforms";
 
 export interface SkillNode {
   id: string;
@@ -18,64 +19,91 @@ export interface SkillLink {
 }
 
 export const skillCategories: SkillCategory[] = [
-  "Data Engineering",
-  "Frontend",
+  "Languages & Frameworks",
+  "AI & Data",
   "Cloud & DevOps",
   "Databases",
+  "Tools & Platforms",
 ];
 
 export const categoryColors: Record<SkillCategory, string> = {
-  "Data Engineering": "#3b82f6",
-  Frontend: "#8b5cf6",
-  "Cloud & DevOps": "#ec4899",
-  Databases: "#06b6d4",
+  "Languages & Frameworks": "#00E5A0",
+  "AI & Data": "#5eead4",
+  "Cloud & DevOps": "#7dd3fc",
+  Databases: "#2dd4bf",
+  "Tools & Platforms": "#bef264",
 };
 
 export const skills: SkillNode[] = [
-  { id: "spark", name: "Spark", category: "Data Engineering", proficiency: 85, years: 4 },
-  { id: "airflow", name: "Airflow", category: "Data Engineering", proficiency: 88, years: 3 },
-  { id: "dbt", name: "dbt", category: "Data Engineering", proficiency: 82, years: 2 },
-  { id: "kafka", name: "Kafka", category: "Data Engineering", proficiency: 80, years: 3 },
-  { id: "sql", name: "SQL", category: "Data Engineering", proficiency: 92, years: 6 },
-  { id: "snowflake", name: "Snowflake", category: "Data Engineering", proficiency: 86, years: 3 },
-  { id: "bigquery", name: "BigQuery", category: "Data Engineering", proficiency: 84, years: 3 },
-  { id: "python", name: "Python", category: "Data Engineering", proficiency: 90, years: 5 },
-  { id: "react", name: "React", category: "Frontend", proficiency: 92, years: 5 },
-  { id: "nextjs", name: "Next.js", category: "Frontend", proficiency: 90, years: 3 },
-  { id: "typescript", name: "TypeScript", category: "Frontend", proficiency: 91, years: 4 },
-  { id: "tailwind", name: "Tailwind", category: "Frontend", proficiency: 88, years: 3 },
-  { id: "framer", name: "Framer Motion", category: "Frontend", proficiency: 85, years: 2 },
-  { id: "aws", name: "AWS", category: "Cloud & DevOps", proficiency: 86, years: 4 },
-  { id: "gcp", name: "GCP", category: "Cloud & DevOps", proficiency: 82, years: 3 },
-  { id: "docker", name: "Docker", category: "Cloud & DevOps", proficiency: 84, years: 4 },
-  { id: "k8s", name: "Kubernetes", category: "Cloud & DevOps", proficiency: 75, years: 2 },
-  { id: "terraform", name: "Terraform", category: "Cloud & DevOps", proficiency: 78, years: 2 },
-  { id: "cicd", name: "CI/CD", category: "Cloud & DevOps", proficiency: 85, years: 4 },
-  { id: "postgres", name: "PostgreSQL", category: "Databases", proficiency: 90, years: 5 },
-  { id: "mongo", name: "MongoDB", category: "Databases", proficiency: 80, years: 3 },
-  { id: "redis", name: "Redis", category: "Databases", proficiency: 78, years: 2 },
-  { id: "dynamo", name: "DynamoDB", category: "Databases", proficiency: 76, years: 2 },
+  { id: "python", name: "Python", category: "Languages & Frameworks", proficiency: 90, years: 3 },
+  { id: "php", name: "PHP", category: "Languages & Frameworks", proficiency: 88, years: 3 },
+  { id: "nodejs", name: "Node.js", category: "Languages & Frameworks", proficiency: 88, years: 3 },
+  { id: "javascript", name: "JavaScript", category: "Languages & Frameworks", proficiency: 92, years: 3 },
+  { id: "typescript", name: "TypeScript", category: "Languages & Frameworks", proficiency: 90, years: 2 },
+  { id: "react", name: "React", category: "Languages & Frameworks", proficiency: 92, years: 3 },
+  { id: "nextjs", name: "Next.js", category: "Languages & Frameworks", proficiency: 90, years: 2 },
+  { id: "vue", name: "Vue", category: "Languages & Frameworks", proficiency: 82, years: 2 },
+  { id: "django", name: "Django", category: "Languages & Frameworks", proficiency: 85, years: 2 },
+  { id: "tailwind", name: "Tailwind CSS", category: "Languages & Frameworks", proficiency: 90, years: 2 },
+
+  { id: "llm", name: "Custom LLM Integration", category: "AI & Data", proficiency: 86, years: 2 },
+  { id: "nlp", name: "NLP", category: "AI & Data", proficiency: 84, years: 2 },
+  { id: "tensorflow", name: "TensorFlow", category: "AI & Data", proficiency: 80, years: 2 },
+  { id: "ga4", name: "Google Analytics v4", category: "AI & Data", proficiency: 85, years: 2 },
+  { id: "looker", name: "Looker Studio", category: "AI & Data", proficiency: 82, years: 2 },
+
+  { id: "lambda", name: "AWS Lambda", category: "Cloud & DevOps", proficiency: 88, years: 2 },
+  { id: "kinesis", name: "AWS Kinesis", category: "Cloud & DevOps", proficiency: 82, years: 2 },
+  { id: "apigateway", name: "Amazon API Gateway", category: "Cloud & DevOps", proficiency: 86, years: 2 },
+  { id: "sns", name: "AWS SNS", category: "Cloud & DevOps", proficiency: 84, years: 2 },
+  { id: "secretsmanager", name: "AWS Secrets Manager", category: "Cloud & DevOps", proficiency: 85, years: 2 },
+  { id: "azure", name: "Azure", category: "Cloud & DevOps", proficiency: 80, years: 2 },
+  { id: "firebase", name: "Google Firebase", category: "Cloud & DevOps", proficiency: 82, years: 2 },
+  { id: "restapis", name: "REST APIs", category: "Cloud & DevOps", proficiency: 92, years: 3 },
+  { id: "webhooks", name: "Webhooks", category: "Cloud & DevOps", proficiency: 88, years: 3 },
+
+  { id: "postgres", name: "PostgreSQL", category: "Databases", proficiency: 90, years: 3 },
+  { id: "dynamodb", name: "DynamoDB", category: "Databases", proficiency: 86, years: 2 },
+  { id: "mongo", name: "MongoDB", category: "Databases", proficiency: 78, years: 2 },
+
+  { id: "git", name: "Git", category: "Tools & Platforms", proficiency: 90, years: 3 },
+  { id: "metaapi", name: "Meta API", category: "Tools & Platforms", proficiency: 85, years: 2 },
+  { id: "woocommerce", name: "WooCommerce", category: "Tools & Platforms", proficiency: 88, years: 3 },
+  { id: "wordpress", name: "WordPress", category: "Tools & Platforms", proficiency: 86, years: 3 },
+  { id: "seo", name: "SEO Pipelines", category: "Tools & Platforms", proficiency: 82, years: 2 },
+  { id: "courier", name: "Courier API Integrations", category: "Tools & Platforms", proficiency: 84, years: 2 },
 ];
 
 export const skillLinks: SkillLink[] = [
-  { source: "python", target: "spark" },
-  { source: "python", target: "airflow" },
-  { source: "spark", target: "kafka" },
-  { source: "airflow", target: "dbt" },
-  { source: "sql", target: "snowflake" },
-  { source: "sql", target: "bigquery" },
-  { source: "dbt", target: "snowflake" },
+  { source: "python", target: "django" },
+  { source: "python", target: "tensorflow" },
+  { source: "python", target: "llm" },
+  { source: "python", target: "nlp" },
+  { source: "python", target: "lambda" },
+  { source: "tensorflow", target: "nlp" },
+  { source: "llm", target: "nlp" },
+  { source: "ga4", target: "looker" },
+  { source: "javascript", target: "typescript" },
+  { source: "typescript", target: "react" },
+  { source: "typescript", target: "nodejs" },
   { source: "react", target: "nextjs" },
-  { source: "react", target: "typescript" },
   { source: "nextjs", target: "tailwind" },
-  { source: "nextjs", target: "framer" },
-  { source: "aws", target: "docker" },
-  { source: "gcp", target: "docker" },
-  { source: "docker", target: "k8s" },
-  { source: "terraform", target: "aws" },
-  { source: "cicd", target: "docker" },
-  { source: "postgres", target: "sql" },
-  { source: "mongo", target: "python" },
-  { source: "redis", target: "postgres" },
-  { source: "dynamo", target: "aws" },
+  { source: "vue", target: "javascript" },
+  { source: "django", target: "postgres" },
+  { source: "php", target: "wordpress" },
+  { source: "wordpress", target: "woocommerce" },
+  { source: "nodejs", target: "restapis" },
+  { source: "restapis", target: "webhooks" },
+  { source: "lambda", target: "kinesis" },
+  { source: "lambda", target: "sns" },
+  { source: "lambda", target: "dynamodb" },
+  { source: "apigateway", target: "secretsmanager" },
+  { source: "apigateway", target: "lambda" },
+  { source: "firebase", target: "react" },
+  { source: "postgres", target: "mongo" },
+  { source: "dynamodb", target: "lambda" },
+  { source: "git", target: "nodejs" },
+  { source: "metaapi", target: "webhooks" },
+  { source: "woocommerce", target: "courier" },
+  { source: "seo", target: "wordpress" },
 ];

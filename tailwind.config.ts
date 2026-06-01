@@ -13,18 +13,20 @@ const config: Config = {
         foreground: "var(--foreground)",
         muted: "var(--muted)",
         accent: {
-          blue: "#3b82f6",
-          purple: "#8b5cf6",
-          magenta: "#ec4899",
+          DEFAULT: "#00E5A0",
+          dim: "#00b883",
+          deep: "#006b52",
+          blue: "#7dd3fc",
+          teal: "#5eead4",
         },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         display: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
+        mono: ["var(--font-jetbrains-mono)", "ui-monospace", "monospace"],
       },
       backgroundImage: {
-        "gradient-accent":
-          "linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899)",
+        "gradient-accent": "linear-gradient(135deg, #00E5A0, #00b883)",
       },
       animation: {
         float: "float 6s ease-in-out infinite",

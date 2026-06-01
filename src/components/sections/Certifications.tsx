@@ -7,22 +7,47 @@ import { certifications } from "@/data/certifications";
 import { staggerContainer, scrollViewport } from "@/hooks/useScrollAnimation";
 
 export function Certifications() {
+  const featured = certifications.filter((c) => c.featured);
+  const rest = certifications.filter((c) => !c.featured);
+
   return (
     <section id="certifications" className="px-6 py-24 md:px-8 md:py-32">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           title="Certifications"
-          subtitle="Credentials you can verify — hover to flip"
+          subtitle="Credentials you can verify — AWS Associate-level certifications featured first"
         />
+
+        {featured.length > 0 && (
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={scrollViewport}
+            variants={staggerContainer}
+            className="mb-10 grid gap-6 md:grid-cols-2"
+          >
+            {featured.map((cert) => (
+              <motion.div
+                key={cert.id}
+                variants={{
+                  hidden: { opacity: 0, y: 24 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+              >
+                <CertCard cert={cert} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={scrollViewport}
           variants={staggerContainer}
-          className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-4"
+          className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-3 xl:grid-cols-5"
         >
-          {certifications.map((cert) => (
+          {rest.map((cert) => (
             <motion.div
               key={cert.id}
               variants={{

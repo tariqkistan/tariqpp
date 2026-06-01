@@ -29,9 +29,9 @@ export function GradientButton({
       className={cn(
         base,
         variant === "primary" &&
-          "bg-gradient-accent text-white shadow-lg shadow-accent-purple/25 hover:shadow-accent-magenta/30",
+          "bg-gradient-accent text-[#0a0a0e] shadow-lg shadow-accent/25 hover:shadow-accent/35",
         variant === "secondary" &&
-          "border border-white/20 bg-white/5 text-foreground backdrop-blur-sm hover:border-white/40 hover:bg-white/10",
+          "border border-accent/25 bg-white/[0.04] text-foreground backdrop-blur-sm hover:border-accent/45 hover:bg-accent/5",
         className
       )}
     >

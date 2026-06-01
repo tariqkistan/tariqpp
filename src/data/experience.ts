@@ -8,36 +8,51 @@ export interface ExperienceEntry {
 
 export const experience: ExperienceEntry[] = [
   {
-    id: "exp-1",
-    role: "[REPLACE: Senior Data Engineer]",
-    company: "[REPLACE: Company Name]",
-    dateRange: "2022 — Present",
+    id: "perfect-laser",
+    role: "Software Engineer",
+    company: "Perfect Laser Technologies",
+    dateRange: "January 2024 – Present · Johannesburg, South Africa",
     bullets: [
-      "Designed and operated real-time streaming pipelines processing 2M+ events/day",
-      "Reduced data warehouse costs by 35% through query optimization and partitioning",
-      "Led migration from batch ETL to event-driven architecture with Kafka and Spark",
+      'Architected "Smart Laser," a full-stack maintenance CRM (React + PostgreSQL) that reduced maintenance turnaround by 30%.',
+      "Engineered an AI-driven support ecosystem with a custom LLM and NLP — automated 60% of support queries.",
+      "Built a distributed inventory system in PHP syncing real-time stock across multiple branches.",
+      "Implemented automated customer touchpoints via Meta API and webhooks, driving a 25% boost in user engagement.",
+      "Optimized high-traffic e-commerce platforms by integrating courier APIs and SEO pipelines to scale digital revenue.",
     ],
   },
   {
-    id: "exp-2",
-    role: "[REPLACE: Frontend Developer]",
-    company: "[REPLACE: Company Name]",
-    dateRange: "2020 — 2022",
+    id: "tranquility",
+    role: "Front-End Software Developer",
+    company: "Tranquility Clinic",
+    dateRange: "January 2023 – December 2023 · Johannesburg, South Africa",
     bullets: [
-      "Built internal analytics dashboards used by 500+ stakeholders",
-      "Shipped a shared component library adopted across 4 product teams",
-      "Improved Core Web Vitals scores from 62 to 94 on key product pages",
+      "Designed and deployed responsive UI components for a digital health consultation platform, prioritizing accessibility and modern UX.",
+      "Produced data-driven market research and technical visualizations for successful investor pitch decks.",
     ],
   },
+];
+
+export const education = [
   {
-    id: "exp-3",
-    role: "[REPLACE: Data Analyst / Engineer]",
-    company: "[REPLACE: Company Name]",
-    dateRange: "2018 — 2020",
-    bullets: [
-      "Automated reporting pipelines saving 20+ hours per week",
-      "Introduced dbt for transformation layer standardization",
-      "Collaborated with product teams on A/B test analysis frameworks",
-    ],
+    id: "eduvos",
+    degree: "BSc Computer Science",
+    school: "Eduvos",
+    detail: "",
+  },
+];
+
+export const awards = [
+  {
+    id: "wro",
+    title: "World Robot Olympiad — 1st Place South Africa, International Finalist",
+    year: "2017",
+    description:
+      "At 12 years old, built a robotics solution addressing a real-world problem. Won 1st place at South African Nationals and represented South Africa at the World Robot Olympiad Finals in Costa Rica, competing against teams from 20+ countries.",
+  },
+  {
+    id: "colours",
+    title: "Full Senior Colours — Greenside High School",
+    year: "2021",
+    description: "Awarded for excellence in Robotics, Chess, and Swimming.",
   },
 ];

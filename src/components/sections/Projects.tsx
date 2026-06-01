@@ -10,7 +10,7 @@ export function Projects() {
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           title="Projects"
-          subtitle="Live demos and product showcases — not just screenshots"
+          subtitle="Production systems, AI pipelines, and cloud architecture — shipped for real users"
         />
         <div className="flex flex-col gap-12 md:gap-16">
           {projects.map((project, index) => (

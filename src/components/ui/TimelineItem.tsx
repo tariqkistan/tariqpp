@@ -37,7 +37,7 @@ export function TimelineItem({ entry, index }: TimelineItemProps) {
             isLeft ? "md:ml-auto md:max-w-md" : "md:mr-auto md:max-w-md"
           )}
         >
-          <p className="text-sm font-medium text-accent-blue">{entry.dateRange}</p>
+          <p className="text-sm font-medium text-accent">{entry.dateRange}</p>
           <h3 className="mt-2 font-display text-xl font-semibold">{entry.role}</h3>
           <p className="mt-1 text-muted">{entry.company}</p>
           <ul

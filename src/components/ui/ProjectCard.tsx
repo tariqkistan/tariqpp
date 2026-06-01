@@ -40,14 +40,14 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm md:p-8"
     >
       <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-accent-blue/20 via-accent-purple/20 to-accent-magenta/20 p-[1px]">
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-accent/25 via-accent-teal/15 to-accent-dim/20 p-[1px]">
           <div className="h-full w-full rounded-3xl bg-background" />
         </div>
       </div>
 
       <div className="relative grid gap-8 lg:grid-cols-2 lg:gap-12">
         <div>
-          <p className="text-sm font-medium text-accent-purple">{project.tagline}</p>
+          <p className="text-sm font-medium text-accent">{project.tagline}</p>
           <h3 className="mt-2 font-display text-2xl font-bold md:text-3xl">
             {project.title}
           </h3>
@@ -62,24 +62,31 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               </span>
             ))}
           </div>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full bg-gradient-accent px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            >
-              Live Demo
-            </a>
-            <a
-              href={project.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold transition-colors hover:border-white/40 hover:bg-white/5"
-            >
-              Source Code
-            </a>
-          </div>
+          {(project.demoUrl || project.repoUrl) && (
+            <div className="mt-8 flex flex-wrap gap-4">
+              {project.demoUrl && (
+                <a
+                  href={project.demoUrl}
+                  {...(project.demoUrl.startsWith("#")
+                    ? {}
+                    : { target: "_blank", rel: "noopener noreferrer" })}
+                  className="rounded-full bg-gradient-accent px-6 py-2.5 text-sm font-semibold text-[#0a0a0e] transition-opacity hover:opacity-90"
+                >
+                  {project.demoUrl.startsWith("#") ? "View on this site" : "Live Demo"}
+                </a>
+              )}
+              {project.repoUrl && (
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold transition-colors hover:border-white/40 hover:bg-white/5"
+                >
+                  Source Code
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="relative aspect-video overflow-hidden rounded-2xl border border-white/10 bg-white/5">

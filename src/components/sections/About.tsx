@@ -14,10 +14,14 @@ import {
 
 export function About() {
   const stats = [
-    { value: siteConfig.stats.yearsExperience, label: "Years Experience", suffix: "+" },
-    { value: siteConfig.stats.projectsCompleted, label: "Projects Completed", suffix: "+" },
-    { value: siteConfig.stats.certifications, label: "Certifications Earned" },
-    { value: siteConfig.stats.pipelinesBuilt, label: "Pipelines Built", suffix: "+" },
+    { value: siteConfig.stats.yearsExperience, label: "Years of Experience", suffix: "+" },
+    { value: siteConfig.stats.projectsShipped, label: "Projects Shipped", suffix: "+" },
+    { value: siteConfig.stats.certifications, label: "Certifications" },
+    {
+      value: siteConfig.stats.supportQueriesAutomated,
+      label: "Support Queries Automated",
+      suffix: "%",
+    },
   ];
 
   return (
@@ -25,7 +29,7 @@ export function About() {
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           title="About Me"
-          subtitle="The story behind the code and the pipelines"
+          subtitle="From robotics finals to production systems that move metrics"
         />
 
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -38,20 +42,23 @@ export function About() {
             className="space-y-6 text-lg leading-relaxed text-foreground/90"
           >
             <p>
-              [REPLACE: Your personal story — who you are, what drives you, your
-              journey into tech. Share what makes you unique as both a data
-              engineer and frontend developer.]
+              I&apos;m Tariq — a software engineer from Johannesburg who&apos;s been obsessed with
+              figuring out how things connect since I was 12, when I built a robotics solution that
+              took me from a classroom in South Africa to the World Robot Olympiad finals in Costa
+              Rica. That curiosity never stopped.
             </p>
             <p>
-              I sit at the intersection of data infrastructure and user
-              experience — building pipelines that power insights and interfaces
-              that make those insights accessible. From Kafka streams to React
-              dashboards, I care about systems that are reliable, observable, and
-              delightful to use.
+              Today, I build full-stack applications, AI-driven automation systems, and
+              cloud-native architectures that solve real business problems. At Perfect Laser
+              Technologies, I&apos;ve architected CRMs that cut maintenance turnaround by 30%, built
+              custom LLM systems that automated 60% of support queries, and shipped distributed
+              inventory systems across multiple branches. I don&apos;t just write code — I ship
+              solutions that move metrics.
             </p>
             <p>
-              [REPLACE: Add a third paragraph about your goals, what you are
-              looking for next, or what kind of problems excite you most.]
+              I learn fast, build faster, and I&apos;m always chasing the next problem worth solving.
+              Whether it&apos;s a serverless fraud detection pipeline on AWS or a polished React
+              dashboard, I care about the craft at every layer of the stack.
             </p>
           </motion.div>
 
@@ -68,15 +75,15 @@ export function About() {
               className="absolute h-48 w-48 rounded-full glow-orb animate-pulse-glow"
               aria-hidden
             />
-            <pre className="relative z-10 overflow-hidden rounded-2xl border border-white/10 bg-black/60 p-6 font-mono text-xs leading-relaxed text-accent-blue/90 md:text-sm">
-              <code>{`const engineer = {
-  role: "Data + Frontend",
-  stack: ["Spark", "React"],
-  passion: "building things
-    that scale & shine"
+            <pre className="relative z-10 overflow-hidden rounded-2xl border border-white/10 bg-black/60 p-6 font-mono text-xs leading-relaxed text-accent/90 md:text-sm">
+              <code>{`const tariq = {
+  role: "Software Engineer",
+  stack: ["React", "Python", "AWS"],
+  focus: "AI, cloud, full-stack",
+  based: "Johannesburg"
 };
 
-export default engineer;`}</code>
+export default tariq;`}</code>
             </pre>
           </motion.div>
         </div>

@@ -21,7 +21,7 @@ export function Contact() {
       <div className="relative z-10 mx-auto max-w-3xl text-center">
         <SectionHeading
           title="Let's Build Something Together"
-          subtitle="Open to collaborations, full-time roles, and interesting data + frontend challenges"
+          subtitle="Open to collaborations, full-time roles, and tough problems worth solving"
           align="center"
         />
 
@@ -39,6 +39,22 @@ export function Contact() {
           >
             {siteConfig.email}
           </a>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          variants={fadeUp}
+          transition={{ ...defaultTransition, delay: 0.08 }}
+          className="mt-6 space-y-2 text-muted"
+        >
+          <p>
+            <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="hover:text-foreground">
+              {siteConfig.phoneDisplay}
+            </a>
+          </p>
+          <p>{siteConfig.location}</p>
         </motion.div>
 
         <motion.div
