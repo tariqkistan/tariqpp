@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const inter = Inter({
@@ -24,9 +25,7 @@ const siteDescription =
   "Full-stack engineer from Johannesburg — AI automation, cloud-native systems, and React. Smart Laser CRM, LLM support ecosystems, AWS serverless, and more.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-  ),
+  metadataBase: new URL(getSiteUrl()),
   title: siteTitle,
   description: siteDescription,
   openGraph: {
