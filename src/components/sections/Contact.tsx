@@ -31,11 +31,11 @@ export function Contact() {
           viewport={scrollViewport}
           variants={fadeUp}
           transition={defaultTransition}
-          className="mt-8"
+          className="mt-8 min-w-0 px-1"
         >
           <a
             href={`mailto:${siteConfig.email}`}
-            className="font-display text-3xl font-black text-ink underline decoration-accent decoration-4 underline-offset-4 transition-opacity hover:opacity-80 md:text-4xl lg:text-5xl"
+            className="inline-block max-w-full break-words font-display text-lg font-black leading-snug text-ink underline decoration-2 decoration-accent underline-offset-4 transition-opacity hover:opacity-80 sm:text-xl sm:decoration-4 sm:underline-offset-4 md:text-3xl lg:text-4xl xl:text-5xl"
           >
             {siteConfig.email}
           </a>

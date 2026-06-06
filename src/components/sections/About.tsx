@@ -97,7 +97,7 @@ export function About() {
             <p className="text-2xl font-bold leading-snug text-ink md:text-3xl md:leading-tight">
               I&apos;m Tariq — a software engineer from{" "}
               <Highlight color="blue">Johannesburg</Highlight> obsessed with how things connect. At
-              12, a <Highlight color="green">robotics</Highlight> build took me from a classroom in
+              16, a <Highlight color="green">robotics</Highlight> build took me from a classroom in
               South Africa to the <Highlight color="ink">World Robot Olympiad</Highlight> finals in
               Costa Rica. That curiosity never stopped.
             </p>

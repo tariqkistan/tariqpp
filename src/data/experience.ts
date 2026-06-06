@@ -53,13 +53,27 @@ export const education: EducationEntry[] = [
   },
 ];
 
-export const awards = [
+export interface AwardEntry {
+  id: string;
+  title: string;
+  year: string;
+  description: string;
+  /** Optional photo under /public */
+  image?: string;
+  /** Alt text when `image` is set */
+  imageAlt?: string;
+}
+
+export const awards: AwardEntry[] = [
   {
     id: "wro",
     title: "World Robot Olympiad — 1st Place South Africa, International Finalist",
     year: "2017",
     description:
-      "At 12 years old, built a robotics solution addressing a real-world problem. Won 1st place at South African Nationals and represented South Africa at the World Robot Olympiad Finals in Costa Rica, competing against teams from 20+ countries.",
+      "At 16 years old, built a robotics solution addressing a real-world problem. Won 1st place at South African Nationals and represented South Africa at the World Robot Olympiad Finals in Costa Rica, competing against teams from 20+ countries.",
+    image: "/awards/wro-international-stage.jpg",
+    imageAlt:
+      "International World Robot Olympiad stage with teams, national flags, and a WE ARE THE FUTURE headline on screen.",
   },
   {
     id: "colours",

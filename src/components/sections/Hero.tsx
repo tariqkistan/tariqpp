@@ -144,7 +144,7 @@ export function Hero() {
             animate="visible"
             variants={fadeUp}
             transition={{ ...defaultTransition, delay: 0.4 }}
-            className="mt-12 flex items-center justify-center gap-8 lg:justify-start"
+            className="mt-12 mb-10 flex items-center justify-center gap-8 lg:mb-0 lg:justify-start"
           >
             <SocialLink href={siteConfig.social.github} label="GitHub">
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -179,13 +179,13 @@ export function Hero() {
           </div>
 
           <div className="rounded-leap border-[3px] border-ink bg-card shadow-[6px_6px_0_0_#ff934f] sm:border-4 sm:shadow-[8px_8px_0_0_#ff934f] lg:shadow-[10px_10px_0_0_#ff934f]">
-            <div className="flex items-center gap-3 border-b-2 border-ink bg-card px-3 py-2.5 sm:px-4">
+            <div className="flex items-center gap-3 border-b-2 border-ink bg-accent px-3 py-2.5 sm:px-4">
               <span className="flex gap-1.5" aria-hidden>
                 <span className="h-2.5 w-2.5 rounded-full border border-ink bg-[#ff5f57]" />
                 <span className="h-2.5 w-2.5 rounded-full border border-ink bg-[#febc2e]" />
                 <span className="h-2.5 w-2.5 rounded-full border border-ink bg-[#28c840]" />
               </span>
-              <span className="truncate font-mono text-[10px] font-medium text-muted sm:text-xs">
+              <span className="truncate font-mono text-[10px] font-medium text-white sm:text-xs">
                 ~/portfolio/profile.png
               </span>
             </div>
@@ -217,7 +217,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 lg:bottom-10"
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 sm:bottom-6 lg:bottom-10"
         aria-hidden
       >
         <motion.div

@@ -132,13 +132,34 @@ export function Experience() {
             {awards.map((award) => (
               <li
                 key={award.id}
-                className="rounded-leap border-2 border-ink bg-card p-6 shadow-leap-sm md:p-8"
+                className="overflow-hidden rounded-leap border-2 border-ink bg-card shadow-leap-sm md:p-8"
               >
-                <p className="text-sm font-medium text-accent">{award.year}</p>
-                <p className="mt-2 font-display text-lg font-semibold md:text-xl">{award.title}</p>
-                <p className="mt-3 text-sm leading-relaxed text-muted md:text-base">
-                  {award.description}
-                </p>
+                <div
+                  className={
+                    award.image
+                      ? "flex flex-col gap-5 p-6 md:flex-row md:items-stretch md:gap-8 md:p-8"
+                      : "p-6 md:p-8"
+                  }
+                >
+                  {award.image ? (
+                    <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-leap border-2 border-ink bg-muted md:aspect-[4/3] md:w-[min(100%,420px)]">
+                      <Image
+                        src={award.image}
+                        alt={award.imageAlt ?? award.title}
+                        fill
+                        className="object-cover object-center"
+                        sizes="(max-width: 768px) 100vw, 420px"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-accent">{award.year}</p>
+                    <p className="mt-2 font-display text-lg font-semibold md:text-xl">{award.title}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted md:text-base">
+                      {award.description}
+                    </p>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
