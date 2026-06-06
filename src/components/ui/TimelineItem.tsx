@@ -33,7 +33,7 @@ export function TimelineItem({ entry, index }: TimelineItemProps) {
       >
         <div
           className={cn(
-            "rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm",
+            "rounded-leap border-2 border-ink bg-card p-6 shadow-leap-sm md:p-8",
             isLeft ? "md:ml-auto md:max-w-md" : "md:mr-auto md:max-w-md"
           )}
         >
@@ -48,7 +48,7 @@ export function TimelineItem({ entry, index }: TimelineItemProps) {
           >
             {entry.bullets.map((bullet, i) => (
               <li key={i} className="flex gap-2">
-                <span className="text-gradient shrink-0">▹</span>
+                <span className="text-accent shrink-0">▹</span>
                 <span>{bullet}</span>
               </li>
             ))}

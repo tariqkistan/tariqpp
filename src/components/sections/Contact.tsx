@@ -10,11 +10,11 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden px-6 py-24 md:px-8 md:py-32"
+      className="relative overflow-hidden border-y-2 border-ink bg-accent/25 px-6 py-24 md:px-8 md:py-32"
     >
-      <div className="pointer-events-none absolute inset-0 mesh-bg opacity-60" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 mesh-bg opacity-40" aria-hidden />
       <motion.div
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full glow-orb animate-pulse-glow"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/25 blur-3xl dark:bg-accent/15"
         aria-hidden
       />
 
@@ -35,7 +35,7 @@ export function Contact() {
         >
           <a
             href={`mailto:${siteConfig.email}`}
-            className="font-display text-3xl font-bold text-gradient transition-opacity hover:opacity-80 md:text-4xl lg:text-5xl"
+            className="font-display text-3xl font-black text-ink underline decoration-accent decoration-4 underline-offset-4 transition-opacity hover:opacity-80 md:text-4xl lg:text-5xl"
           >
             {siteConfig.email}
           </a>

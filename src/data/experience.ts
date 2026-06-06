@@ -32,12 +32,24 @@ export const experience: ExperienceEntry[] = [
   },
 ];
 
-export const education = [
+export interface EducationEntry {
+  id: string;
+  degree: string;
+  school: string;
+  detail: string;
+  /** Raster logo under /public (opaque backgrounds avoided when possible) */
+  logo?: string;
+  /** Built-in vector mark — no black box on the card */
+  logoBrand?: "eduvos";
+}
+
+export const education: EducationEntry[] = [
   {
     id: "eduvos",
     degree: "BSc Computer Science",
     school: "Eduvos",
     detail: "",
+    logoBrand: "eduvos",
   },
 ];
 

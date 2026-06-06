@@ -1,541 +1,318 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  forceCenter,
-  forceCollide,
-  forceLink,
-  forceManyBody,
-  forceSimulation,
-  type Simulation,
-} from "d3-force";
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import {
-  SkillChip,
-  SkillDetailPanel,
-  GraphSkillNode,
-  getHitRadius,
-  type SimNode,
-} from "@/components/ui/SkillNode";
+import { SkillDetailPanel } from "@/components/ui/SkillNode";
+import { TechBrandIconTile } from "@/components/ui/TechIcon";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { getTechIconSlug } from "@/lib/tech-icons";
 import {
   skills,
-  skillLinks,
   skillCategories,
   categoryColors,
   type SkillCategory,
+  type SkillNode,
 } from "@/data/skills";
 import { cn } from "@/lib/utils";
+import { fadeUp, scrollViewport, defaultTransition } from "@/hooks/useScrollAnimation";
 
-interface SimLink {
-  source: string | SimNode;
-  target: string | SimNode;
-}
-
-const DRAG_THRESHOLD_PX = 5;
+const MOBILE_SKILLS_INITIAL = 6;
+const MOBILE_SKILLS_STEP = 6;
 
 export function Skills() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const simulationRef = useRef<Simulation<SimNode, SimLink> | null>(null);
-  const nodesRef = useRef<SimNode[]>([]);
-  const dragRef = useRef<{
-    nodeId: string;
-    pointerId: number;
-    startClientX: number;
-    startClientY: number;
-    hasMoved: boolean;
-  } | null>(null);
-
-  const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
-  const [nodes, setNodes] = useState<SimNode[]>([]);
-  const [links, setLinks] = useState<SimLink[]>([]);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [draggingId, setDraggingId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<SkillCategory | null>(null);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [mobileSkillsCap, setMobileSkillsCap] = useState(MOBILE_SKILLS_INITIAL);
 
-  const activeId = selectedId ?? draggingId ?? hoveredId;
-
-  const clientToSvg = useCallback((clientX: number, clientY: number) => {
-    const svg = svgRef.current;
-    if (!svg) return { x: 0, y: 0 };
-    const pt = svg.createSVGPoint();
-    pt.x = clientX;
-    pt.y = clientY;
-    const ctm = svg.getScreenCTM();
-    if (!ctm) return { x: 0, y: 0 };
-    const p = pt.matrixTransform(ctm.inverse());
-    return { x: p.x, y: p.y };
-  }, []);
-
-  const moveNode = useCallback((id: string, x: number, y: number) => {
-    const node = nodesRef.current.find((n) => n.id === id);
-    if (!node) return;
-    node.fx = x;
-    node.fy = y;
-    node.x = x;
-    node.y = y;
-    node.vx = 0;
-    node.vy = 0;
-    setNodes([...nodesRef.current]);
-  }, []);
-
-  const pauseSimulation = useCallback(() => {
-    simulationRef.current?.alphaTarget(0);
-  }, []);
-
-  const pinNode = useCallback((id: string) => {
-    const node = nodesRef.current.find((n) => n.id === id);
-    if (node?.x != null && node?.y != null) {
-      node.fx = node.x;
-      node.fy = node.y;
-      node.vx = 0;
-      node.vy = 0;
-    }
-    pauseSimulation();
-  }, [pauseSimulation]);
-
-  const unpinAll = useCallback(() => {
-    nodesRef.current.forEach((n) => {
-      n.fx = null;
-      n.fy = null;
-    });
-  }, []);
-
-  const selectNode = useCallback(
-    (id: string) => {
-      setSelectedId((prev) => {
-        if (prev === id) {
-          unpinAll();
-          if (!reducedMotion) simulationRef.current?.alphaTarget(0.02).restart();
-          return null;
-        }
-        unpinAll();
-        pinNode(id);
-        return id;
-      });
-    },
-    [pinNode, unpinAll, reducedMotion]
+  const visibleSkills = useMemo(
+    () =>
+      selectedCategory ? skills.filter((s) => s.category === selectedCategory) : skills,
+    [selectedCategory]
   );
 
-  const clearSelection = useCallback(() => {
-    setSelectedId(null);
-    setHoveredId(null);
-    setDraggingId(null);
-    dragRef.current = null;
-    unpinAll();
-    if (!reducedMotion) simulationRef.current?.alphaTarget(0.02).restart();
-  }, [unpinAll, reducedMotion]);
-
-  const handlePointerDown = useCallback(
-    (e: React.PointerEvent<SVGGElement>, nodeId: string) => {
-      e.stopPropagation();
-      e.preventDefault();
-      e.currentTarget.setPointerCapture(e.pointerId);
-
-      dragRef.current = {
-        nodeId,
-        pointerId: e.pointerId,
-        startClientX: e.clientX,
-        startClientY: e.clientY,
-        hasMoved: false,
-      };
-      setDraggingId(nodeId);
-      pinNode(nodeId);
-      pauseSimulation();
-    },
-    [pauseSimulation, pinNode]
+  const sortedSkills = useMemo(
+    () => [...visibleSkills].sort((a, b) => b.proficiency - a.proficiency),
+    [visibleSkills]
   );
 
-  const handlePointerMove = useCallback(
-    (e: React.PointerEvent<SVGGElement>) => {
-      const drag = dragRef.current;
-      if (!drag || drag.pointerId !== e.pointerId) return;
+  const featuredIds = useMemo(() => {
+    const n = selectedCategory ? 1 : 3;
+    return new Set(sortedSkills.slice(0, Math.min(n, sortedSkills.length)).map((s) => s.id));
+  }, [sortedSkills, selectedCategory]);
 
-      const dx = e.clientX - drag.startClientX;
-      const dy = e.clientY - drag.startClientY;
-      if (Math.hypot(dx, dy) > DRAG_THRESHOLD_PX) {
-        drag.hasMoved = true;
-      }
-
-      if (drag.hasMoved) {
-        const { x, y } = clientToSvg(e.clientX, e.clientY);
-        moveNode(drag.nodeId, x, y);
-      }
-    },
-    [clientToSvg, moveNode]
-  );
-
-  const handlePointerUp = useCallback(
-    (e: React.PointerEvent<SVGGElement>) => {
-      const drag = dragRef.current;
-      if (!drag || drag.pointerId !== e.pointerId) return;
-
-      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-        e.currentTarget.releasePointerCapture(e.pointerId);
-      }
-
-      if (!drag.hasMoved) {
-        selectNode(drag.nodeId);
-      } else {
-        setSelectedId(drag.nodeId);
-        pinNode(drag.nodeId);
-      }
-
-      dragRef.current = null;
-      setDraggingId(null);
-    },
-    [selectNode, pinNode]
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const handler = () => setReducedMotion(mq.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+  const stats = useMemo(() => {
+    const flagship = skills.filter((s) => s.proficiency >= 88).length;
+    const maxYears = Math.max(...skills.map((s) => s.years), 0);
+    return {
+      tools: skills.length,
+      domains: skillCategories.length,
+      flagship,
+      maxYears,
+    };
   }, []);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const ro = new ResizeObserver((entries) => {
-      const { width } = entries[0].contentRect;
-      const height = Math.min(520, Math.max(400, width * 0.55));
-      setDimensions({ width, height });
-    });
-    ro.observe(container);
-    return () => ro.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const { width, height } = dimensions;
-
-    const simNodes: SimNode[] = skills.map((s) => ({ ...s }));
-    const simLinks: SimLink[] = skillLinks.map((l) => ({ ...l }));
-
-    const simulation = forceSimulation<SimNode>(simNodes)
-      .force(
-        "link",
-        forceLink<SimNode, SimLink>(simLinks)
-          .id((d) => d.id)
-          .distance(90)
-          .strength(0.35)
-      )
-      .force("charge", forceManyBody().strength(-180))
-      .force("center", forceCenter(width / 2, height / 2))
-      .force(
-        "collide",
-        forceCollide<SimNode>().radius(() => getHitRadius() + 4)
-      )
-      .alphaDecay(0.04)
-      .velocityDecay(0.45);
-
-    if (reducedMotion) {
-      simulation.stop();
-      simNodes.forEach((n, i) => {
-        const angle = (i / simNodes.length) * Math.PI * 2;
-        const r = Math.min(width, height) * 0.32;
-        n.x = width / 2 + Math.cos(angle) * r;
-        n.y = height / 2 + Math.sin(angle) * r;
-      });
-      nodesRef.current = simNodes;
-      setNodes([...simNodes]);
-      setLinks([...simLinks]);
-    } else {
-      simulation.alpha(0.9).restart();
-      simulation.on("tick", () => {
-        setNodes([...simNodes]);
-        setLinks([...simLinks]);
-      });
-
-      simulationRef.current = simulation;
-      nodesRef.current = simNodes;
-
-      return () => {
-        simulation.stop();
-      };
-    }
-  }, [dimensions, reducedMotion]);
-
-  useEffect(() => {
-    if (selectedId) pinNode(selectedId);
-  }, [selectedId, pinNode]);
-
-  useEffect(() => {
-    const sim = simulationRef.current;
-    const simNodes = nodesRef.current;
-    if (!sim || !simNodes.length) return;
-
-    const { width, height } = dimensions;
-    const centerForce = sim.force("center") as ReturnType<typeof forceCenter>;
-
-    if (selectedCategory) {
-      const categoryNodes = simNodes.filter((n) => n.category === selectedCategory);
-      const cx =
-        categoryNodes.reduce((s, n) => s + (n.x ?? 0), 0) / categoryNodes.length;
-      const cy =
-        categoryNodes.reduce((s, n) => s + (n.y ?? 0), 0) / categoryNodes.length;
-      centerForce.x(cx || width / 2).y(cy || height / 2);
-    } else {
-      centerForce.x(width / 2).y(height / 2);
-    }
-
-    if (!reducedMotion && !selectedId) sim.alpha(0.25).restart();
-  }, [selectedCategory, dimensions, reducedMotion, selectedId]);
+  const selectedSkill = skills.find((s) => s.id === selectedId) ?? null;
 
   const handleCategoryChange = (cat: SkillCategory | null) => {
     setSelectedCategory(cat);
-    clearSelection();
+    setSelectedId(null);
   };
 
-  const isConnected = useCallback((a: string, b: string) =>
-    skillLinks.some(
-      (l) =>
-        (l.source === a && l.target === b) ||
-        (l.target === a && l.source === b)
-    ), []);
+  useEffect(() => {
+    setMobileSkillsCap(MOBILE_SKILLS_INITIAL);
+  }, [selectedCategory, sortedSkills.length]);
 
-  const isNodeActive = useCallback(
-    (nodeId: string) => {
-      if (activeId) {
-        if (nodeId === activeId) return true;
-        return isConnected(nodeId, activeId);
-      }
-      if (selectedCategory) {
-        return skills.find((s) => s.id === nodeId)?.category === selectedCategory;
-      }
-      return true;
-    },
-    [activeId, selectedCategory, isConnected]
-  );
+  const toggleSkill = (id: string) => {
+    setSelectedId((prev) => (prev === id ? null : id));
+  };
 
-  const isLinkActive = useCallback(
-    (link: SimLink) => {
-      const src = typeof link.source === "object" ? link.source.id : link.source;
-      const tgt = typeof link.target === "object" ? link.target.id : link.target;
-      if (activeId) return src === activeId || tgt === activeId;
-      if (selectedCategory) {
-        const s = skills.find((n) => n.id === src);
-        const t = skills.find((n) => n.id === tgt);
-        return s?.category === selectedCategory && t?.category === selectedCategory;
-      }
-      return true;
-    },
-    [activeId, selectedCategory]
-  );
+  const hiddenOnMobile = (index: number) =>
+    index >= mobileSkillsCap ? "max-md:hidden" : undefined;
 
-  const visibleSkills = selectedCategory
-    ? skills.filter((s) => s.category === selectedCategory)
-    : skills;
-
-  const selectedSkill = skills.find((s) => s.id === selectedId);
+  const mobileRemaining = Math.max(0, sortedSkills.length - mobileSkillsCap);
+  const showMobileLoadMore = mobileRemaining > 0;
 
   return (
-    <section id="skills" className="px-6 py-24 md:px-8 md:py-32">
-      <div className="mx-auto max-w-7xl">
+    <section
+      id="skills"
+      className="relative overflow-hidden border-y-2 border-ink bg-background px-6 py-24 md:px-8 md:py-32"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.055] dark:opacity-[0.09]"
+        aria-hidden
+      >
+        <div
+          className="absolute inset-0 h-full w-full"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, var(--ink) 1px, transparent 0)`,
+            backgroundSize: "28px 28px",
+          }}
+        />
+        <div className="absolute -right-24 top-1/4 h-72 w-72 rounded-full border-2 border-dashed border-ink/30" />
+        <div className="absolute -left-16 bottom-1/4 h-48 w-48 rounded-full border-2 border-dashed border-ink/25" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl">
         <SectionHeading
           title="Skills & Tech Stack"
-          subtitle="Drag skills in the graph to rearrange, or pick from the list below"
+          subtitle="A recruiter-readable dossier: live counts, verified logos, and depth you can filter like a hiring manager skimming a CV in sixty seconds."
         />
 
-        <div className="mb-4 flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => handleCategoryChange(null)}
-            className={cn(
-              "rounded-full px-4 py-1.5 text-sm font-medium transition-all",
-              !selectedCategory
-                ? "bg-gradient-accent text-[#0a0a0e]"
-                : "border border-white/10 bg-white/5 text-muted hover:border-white/30"
-            )}
-          >
-            All
-          </button>
-          {skillCategories.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              onClick={() =>
-                handleCategoryChange(selectedCategory === cat ? null : cat)
-              }
-              className={cn(
-                "rounded-full px-4 py-1.5 text-sm font-medium transition-all",
-                selectedCategory === cat
-                  ? "text-[#0a0a0e]"
-                  : "border border-white/10 bg-white/5 text-muted hover:border-white/30"
-              )}
-              style={
-                selectedCategory === cat
-                  ? { background: categoryColors[cat] }
-                  : undefined
-              }
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        <div className="mb-4 max-h-32 overflow-y-auto rounded-xl border border-white/10 bg-white/[0.02] p-3 md:max-h-none md:overflow-visible">
-          <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">
-            Quick select
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          variants={fadeUp}
+          transition={defaultTransition}
+          className="mb-8 rounded-leap border-2 border-ink bg-ink p-4 text-[var(--on-ink)] shadow-leap sm:p-5"
+        >
+          <div className="mb-3 flex items-center gap-2 border-b border-white/15 pb-3 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60 sm:text-xs">
+            <span className="flex gap-1.5" aria-hidden>
+              <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+              <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
+              <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+            </span>
+            <span className="truncate">~/tariq/stack-dossier — verified</span>
+          </div>
+          <p className="font-mono text-sm leading-relaxed sm:text-base">
+            <span className="text-accent">$</span> cat inventory.json | jq &apos;.[] | select(.proficiency &gt;= 88)&apos; | wc -l
           </p>
+          <p className="mt-2 font-mono text-xs text-white/75 sm:text-sm">
+            <span className="mr-2 inline-block h-4 w-2 animate-pulse bg-accent align-middle" aria-hidden />
+            → {stats.flagship} flagship tools · {stats.tools} total logged · {stats.maxYears}+ yrs on deepest skills
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          variants={fadeUp}
+          transition={{ ...defaultTransition, delay: 0.06 }}
+          className="mb-10 grid grid-cols-3 gap-3 rounded-leap border-2 border-ink bg-card p-4 shadow-leap-sm sm:gap-4 sm:p-6"
+        >
+          <AnimatedCounter value={stats.tools} label="Tools in stack" size="compact" />
+          <AnimatedCounter value={stats.domains} label="Domains" size="compact" />
+          <AnimatedCounter value={stats.flagship} label="≥88% depth" size="compact" />
+        </motion.div>
+
+        <div
+          className="mb-8 rounded-leap border-2 border-ink bg-surface p-2 shadow-leap-sm"
+          role="tablist"
+          aria-label="Filter skills by category"
+        >
           <div className="flex flex-wrap gap-2">
-            {visibleSkills.map((skill) => (
-              <SkillChip
-                key={skill.id}
-                id={skill.id}
-                name={skill.name}
-                category={skill.category}
-                isSelected={selectedId === skill.id}
-                onClick={() => selectNode(skill.id)}
-              />
+            <button
+              type="button"
+              role="tab"
+              aria-selected={!selectedCategory}
+              onClick={() => handleCategoryChange(null)}
+              className={cn(
+                "rounded-leap px-4 py-2 text-sm font-bold transition-all",
+                !selectedCategory
+                  ? "border-2 border-ink bg-card text-ink shadow-leap-sm"
+                  : "border-2 border-transparent text-muted hover:border-ink/20 hover:text-foreground"
+              )}
+            >
+              All
+            </button>
+            {skillCategories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                role="tab"
+                aria-selected={selectedCategory === cat}
+                onClick={() =>
+                  handleCategoryChange(selectedCategory === cat ? null : cat)
+                }
+                className={cn(
+                  "rounded-leap px-4 py-2 text-sm font-bold transition-all",
+                  selectedCategory === cat
+                    ? cn(
+                        "border-2 border-ink shadow-leap-sm",
+                        cat === "Languages & Frameworks"
+                          ? "text-accent-on"
+                          : "text-[#0a0a0e]"
+                      )
+                    : "border-2 border-transparent text-muted hover:border-ink/20 hover:text-foreground"
+                )}
+                style={
+                  selectedCategory === cat ? { background: categoryColors[cat] } : undefined
+                }
+              >
+                {cat}
+              </button>
             ))}
           </div>
         </div>
 
-        {selectedSkill && (
-          <div className="mb-4">
-            <SkillDetailPanel node={selectedSkill} onClose={clearSelection} />
+        <div
+          className={cn(
+            "columns-1 gap-x-4 [column-fill:_balance]",
+            "sm:columns-2 lg:columns-2 xl:columns-3"
+          )}
+        >
+          {sortedSkills.map((skill, index) => (
+            <div
+              key={skill.id}
+              className={cn("mb-4 break-inside-avoid", hiddenOnMobile(index))}
+            >
+              <SkillCard
+                skill={skill}
+                index={index}
+                isSelected={selectedId === skill.id}
+                isFeatured={featuredIds.has(skill.id)}
+                onToggle={() => toggleSkill(skill.id)}
+              />
+            </div>
+          ))}
+        </div>
+
+        {showMobileLoadMore && (
+          <div className="mt-6 flex justify-center md:hidden">
+            <button
+              type="button"
+              onClick={() =>
+                setMobileSkillsCap((c) =>
+                  Math.min(c + MOBILE_SKILLS_STEP, sortedSkills.length)
+                )
+              }
+              className="rounded-leap border-2 border-ink bg-accent px-8 py-3 font-display text-sm font-black uppercase tracking-wide text-accent-on shadow-leap-sm transition hover:bg-accent-dim hover:shadow-none"
+            >
+              Load more
+              <span className="ml-2 font-mono text-xs font-bold normal-case text-ink/80">
+                (+{Math.min(MOBILE_SKILLS_STEP, mobileRemaining)} of {mobileRemaining})
+              </span>
+            </button>
           </div>
         )}
 
-        <div
-          ref={containerRef}
-          className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]"
-          style={{ aspectRatio: "16/9", minHeight: 400 }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget || (e.target as Element).tagName === "svg") {
-              clearSelection();
-            }
-          }}
-        >
-          <svg
-            ref={svgRef}
-            width={dimensions.width}
-            height={dimensions.height}
-            className="h-full w-full touch-none select-none"
-            role="img"
-            aria-label="Interactive skill constellation graph — drag nodes to reposition"
-          >
-            <defs>
-              <linearGradient id="linkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#00E5A0" />
-                <stop offset="50%" stopColor="#5eead4" />
-                <stop offset="100%" stopColor="#7dd3fc" />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-
-            <g pointerEvents="none">
-              {links.map((link, i) => {
-                const src = link.source as SimNode;
-                const tgt = link.target as SimNode;
-                if (src.x == null || tgt.x == null) return null;
-                const active = isLinkActive(link);
-                return (
-                  <line
-                    key={i}
-                    x1={src.x}
-                    y1={src.y!}
-                    x2={tgt.x}
-                    y2={tgt.y!}
-                    stroke="url(#linkGradient)"
-                    strokeWidth={active ? 1.5 : 0.5}
-                    strokeOpacity={active ? 0.6 : 0.1}
-                    filter={active ? "url(#glow)" : undefined}
-                  />
-                );
-              })}
-            </g>
-
-            {/* Visual nodes (non-interactive) */}
-            <g pointerEvents="none">
-              {nodes.map((node) => {
-                if (node.x == null || node.y == null) return null;
-                const highlighted = isNodeActive(node.id);
-                const isActive = activeId === node.id;
-
-                return (
-                  <g
-                    key={`vis-${node.id}`}
-                    transform={`translate(${node.x},${node.y})`}
-                  >
-                    <GraphSkillNode
-                      node={node}
-                      isActive={isActive}
-                      isHighlighted={highlighted}
-                    />
-                  </g>
-                );
-              })}
-            </g>
-
-            {/* Hit targets on top — large, stable click areas */}
-            <g>
-              {nodes.map((node) => {
-                if (node.x == null || node.y == null) return null;
-                const hitR = getHitRadius();
-                const isActive = activeId === node.id;
-
-                const isDragging = draggingId === node.id;
-
-                return (
-                  <g
-                    key={`hit-${node.id}`}
-                    transform={`translate(${node.x},${node.y})`}
-                    className={cn(
-                      "cursor-grab focus:outline-none",
-                      isDragging && "cursor-grabbing"
-                    )}
-                    onPointerDown={(e) => handlePointerDown(e, node.id)}
-                    onPointerMove={handlePointerMove}
-                    onPointerUp={handlePointerUp}
-                    onPointerCancel={handlePointerUp}
-                    onMouseEnter={() => {
-                      if (!selectedId && !draggingId) setHoveredId(node.id);
-                    }}
-                    onMouseLeave={() => {
-                      if (!selectedId && !draggingId) setHoveredId(null);
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${node.name}, ${node.category}. Drag to reposition or click to select.`}
-                    aria-pressed={isActive}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        selectNode(node.id);
-                      }
-                    }}
-                  >
-                    <circle
-                      r={hitR}
-                      fill="transparent"
-                      className={cn(
-                        (isActive || isDragging) && "fill-white/5 stroke-2",
-                        (isActive || isDragging) && "stroke-white/30"
-                      )}
-                    />
-                  </g>
-                );
-              })}
-            </g>
-          </svg>
-        </div>
-
-        <p className="mt-4 text-center text-sm text-muted">
-          Drag any skill box to move it · Click to select · Click empty space or Clear to release
-        </p>
+        {selectedSkill && (
+          <div className="mt-8">
+            <SkillDetailPanel node={selectedSkill} onClose={() => setSelectedId(null)} />
+          </div>
+        )}
       </div>
     </section>
+  );
+}
+
+function SkillCard({
+  skill,
+  index,
+  isSelected,
+  isFeatured,
+  onToggle,
+}: {
+  skill: SkillNode;
+  index: number;
+  isSelected: boolean;
+  isFeatured: boolean;
+  onToggle: () => void;
+}) {
+  const accent = categoryColors[skill.category];
+  const slug = getTechIconSlug(skill.id);
+  const tileSize = isFeatured ? 56 : 44;
+
+  return (
+    <motion.button
+      type="button"
+      initial="hidden"
+      whileInView="visible"
+      viewport={scrollViewport}
+      variants={fadeUp}
+      transition={{ ...defaultTransition, delay: Math.min(index * 0.04, 0.4) }}
+      onClick={onToggle}
+      className={cn(
+        "group flex w-full flex-col rounded-leap border-2 border-ink bg-card text-left shadow-leap-sm transition-all hover:-translate-y-0.5 hover:shadow-leap",
+        isFeatured && !isSelected && "ring-2 ring-accent ring-offset-2 ring-offset-background",
+        isSelected && "ring-2 ring-ink ring-offset-2 ring-offset-background"
+      )}
+      aria-pressed={isSelected}
+    >
+      <div className="p-4 sm:p-5">
+        <div className="flex items-start gap-3 sm:gap-4">
+          <TechBrandIconTile name={skill.id} slug={slug ?? undefined} size={tileSize} />
+          <div className="min-w-0 flex-1">
+            <p
+              className={cn(
+                "font-display font-black leading-tight text-ink",
+                isFeatured ? "text-xl sm:text-2xl" : "text-base sm:text-lg"
+              )}
+            >
+              {skill.name}
+            </p>
+            <p className="mt-1 text-[11px] font-bold uppercase tracking-wider text-muted">
+              {skill.category}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 flex items-end justify-between gap-2 border-t-2 border-ink/10 pt-4">
+          <div>
+            <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-muted">
+              Time in role
+            </p>
+            <p className="font-display text-lg font-black text-ink">{skill.years}+ yrs</p>
+          </div>
+          <div className="text-right">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-muted">
+              Proficiency
+            </p>
+            <p className="font-display text-2xl font-black tabular-nums text-ink sm:text-3xl">
+              {skill.proficiency}
+              <span className="text-lg text-muted sm:text-xl">%</span>
+            </p>
+          </div>
+        </div>
+        <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full border-2 border-ink/20 bg-surface">
+          <div
+            className="h-full rounded-full transition-all duration-500 group-hover:brightness-95"
+            style={{ width: `${skill.proficiency}%`, background: accent }}
+          />
+        </div>
+      </div>
+    </motion.button>
   );
 }

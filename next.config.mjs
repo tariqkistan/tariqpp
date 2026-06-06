@@ -10,6 +10,11 @@ const nextConfig = {
         hostname: "cdn.simpleicons.org",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.jsdelivr.net",
+        pathname: "/npm/simple-icons@*/icons/**",
+      },
     ],
   },
 };

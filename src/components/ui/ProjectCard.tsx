@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { Project } from "@/data/projects";
-import { TechLabel } from "@/components/ui/TechIcon";
+import { TechBrandPill } from "@/components/ui/TechIcon";
 import { fadeUp, scrollViewport, defaultTransition } from "@/hooks/useScrollAnimation";
 interface ProjectCardProps {
   project: Project;
@@ -37,29 +37,24 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       whileHover={{ y: -8 }}
-      className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm md:p-8"
+      className="group relative overflow-hidden rounded-leap border-2 border-ink bg-card p-6 shadow-leap-sm transition-shadow hover:shadow-leap md:p-8"
     >
-      <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-accent/25 via-accent-teal/15 to-accent-dim/20 p-[1px]">
-          <div className="h-full w-full rounded-3xl bg-background" />
+      <div className="pointer-events-none absolute inset-0 rounded-leap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="absolute inset-0 rounded-leap bg-accent/15 p-[2px]">
+          <div className="h-full w-full rounded-leap bg-background" />
         </div>
       </div>
 
       <div className="relative grid gap-8 lg:grid-cols-2 lg:gap-12">
         <div>
-          <p className="text-sm font-medium text-accent">{project.tagline}</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-ink/70">{project.tagline}</p>
           <h3 className="mt-2 font-display text-2xl font-bold md:text-3xl">
             {project.title}
           </h3>
           <p className="mt-4 text-muted leading-relaxed">{project.description}</p>
           <div className="mt-6 flex flex-wrap gap-2">
             {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1.5"
-              >
-                <TechLabel name={tag} iconSize={16} className="text-xs text-foreground/80" />
-              </span>
+              <TechBrandPill key={tag} name={tag} />
             ))}
           </div>
           {(project.demoUrl || project.repoUrl) && (
@@ -70,7 +65,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   {...(project.demoUrl.startsWith("#")
                     ? {}
                     : { target: "_blank", rel: "noopener noreferrer" })}
-                  className="rounded-full bg-gradient-accent px-6 py-2.5 text-sm font-semibold text-[#0a0a0e] transition-opacity hover:opacity-90"
+                className="rounded-full bg-ink px-6 py-2.5 text-sm font-bold text-[var(--on-ink)] shadow-leap-sm transition hover:opacity-90 hover:shadow-none"
                 >
                   {project.demoUrl.startsWith("#") ? "View on this site" : "Live Demo"}
                 </a>
@@ -80,7 +75,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   href={project.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold transition-colors hover:border-white/40 hover:bg-white/5"
+                  className="rounded-full border-2 border-ink bg-accent px-6 py-2.5 text-sm font-bold text-accent-on shadow-leap-sm transition hover:bg-accent-dim hover:shadow-none"
                 >
                   Source Code
                 </a>
@@ -89,7 +84,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           )}
         </div>
 
-        <div className="relative aspect-video overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+        <div className="relative aspect-video overflow-hidden rounded-leap border-2 border-ink bg-surface">
           {project.embedUrl ? (
             <iframe
               src={project.embedUrl}

@@ -1,6 +1,8 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  /** Class strategy — no toggle means `dark` is never set, so `dark:` styles stay off */
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,13 +14,23 @@ const config: Config = {
         background: "var(--bg)",
         foreground: "var(--foreground)",
         muted: "var(--muted)",
+        ink: "var(--ink)",
+        surface: "var(--bg-muted)",
         accent: {
-          DEFAULT: "#00E5A0",
-          dim: "#00b883",
-          deep: "#006b52",
-          blue: "#7dd3fc",
-          teal: "#5eead4",
+          DEFAULT: "#0f4d92",
+          dim: "#0c3f78",
+          deep: "#0a335f",
+          blue: "#3b82f6",
+          teal: "#0ea5e9",
+          on: "var(--on-accent)",
         },
+        coral: {
+          DEFAULT: "var(--coral)",
+          dim: "var(--coral-dim)",
+        },
+      },
+      borderRadius: {
+        leap: "10px",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
@@ -26,7 +38,11 @@ const config: Config = {
         mono: ["var(--font-jetbrains-mono)", "ui-monospace", "monospace"],
       },
       backgroundImage: {
-        "gradient-accent": "linear-gradient(135deg, #00E5A0, #00b883)",
+        "gradient-accent": "var(--gradient-accent)",
+      },
+      boxShadow: {
+        leap: "4px 4px 0 0 var(--shadow-edge)",
+        "leap-sm": "2px 2px 0 0 var(--shadow-edge)",
       },
       animation: {
         float: "float 6s ease-in-out infinite",

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { siteConfig } from "@/data/site";
 
 function SocialIcon({ href, label, children }: { href: string; label: string; children: React.ReactNode }) {
@@ -10,7 +9,7 @@ function SocialIcon({ href, label, children }: { href: string; label: string; ch
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="text-muted transition-colors hover:text-foreground"
+      className="text-white/70 transition-colors hover:text-accent"
     >
       {children}
     </a>
@@ -21,15 +20,15 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative border-t border-transparent px-6 py-12 md:px-8">
+    <footer className="relative border-t-2 border-ink bg-ink px-6 py-12 text-white md:px-8">
       <div
-        className="absolute left-0 right-0 top-0 h-px bg-gradient-accent bg-[length:200%_100%] animate-gradient-shift"
+        className="absolute left-0 right-0 top-0 h-1 bg-accent"
         aria-hidden
       />
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
         <div className="text-center md:text-left">
           <p className="font-display font-semibold">{siteConfig.name}</p>
-          <p className="mt-1 text-sm text-muted">
+          <p className="mt-1 text-sm text-white/70">
             © {year} All rights reserved.
           </p>
         </div>
@@ -52,15 +51,8 @@ export function Footer() {
           </SocialIcon>
         </div>
 
-        <p className="text-center text-sm text-muted md:text-right">
-          Built with{" "}
-          <Link href="https://nextjs.org" className="hover:text-foreground" target="_blank">
-            Next.js
-          </Link>{" "}
-          & deployed on{" "}
-          <Link href="https://vercel.com" className="hover:text-foreground" target="_blank">
-            Vercel
-          </Link>
+        <p className="text-center text-sm text-white/70 md:text-right">
+          Built with love by Tariq and Agents.
         </p>
       </div>
     </footer>

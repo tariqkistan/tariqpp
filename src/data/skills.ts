@@ -27,11 +27,11 @@ export const skillCategories: SkillCategory[] = [
 ];
 
 export const categoryColors: Record<SkillCategory, string> = {
-  "Languages & Frameworks": "#00E5A0",
-  "AI & Data": "#5eead4",
-  "Cloud & DevOps": "#7dd3fc",
-  Databases: "#2dd4bf",
-  "Tools & Platforms": "#bef264",
+  "Languages & Frameworks": "#0f4d92",
+  "AI & Data": "#38bdf8",
+  "Cloud & DevOps": "#60a5fa",
+  Databases: "#fb923c",
+  "Tools & Platforms": "#a3e635",
 };
 
 export const skills: SkillNode[] = [

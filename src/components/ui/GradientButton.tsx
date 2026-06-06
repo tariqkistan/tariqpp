@@ -20,18 +20,18 @@ export function GradientButton({
   external,
 }: GradientButtonProps) {
   const base =
-    "inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold transition-all md:text-base";
+    "inline-flex items-center justify-center rounded-leap border-2 border-ink px-8 py-3 text-sm font-bold transition-all md:text-base";
 
   const content = (
     <motion.span
-      whileHover={{ scale: 1.03 }}
+      whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className={cn(
         base,
         variant === "primary" &&
-          "bg-gradient-accent text-[#0a0a0e] shadow-lg shadow-accent/25 hover:shadow-accent/35",
+          "bg-ink text-[var(--on-ink)] shadow-[6px_6px_0_0_#ff934f] hover:opacity-90 hover:shadow-[4px_4px_0_0_#e67a35] hover:translate-x-0.5 hover:translate-y-0.5",
         variant === "secondary" &&
-          "border border-accent/25 bg-white/[0.04] text-foreground backdrop-blur-sm hover:border-accent/45 hover:bg-accent/5",
+          "bg-accent text-accent-on shadow-leap-sm hover:bg-accent-dim hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5",
         className
       )}
     >

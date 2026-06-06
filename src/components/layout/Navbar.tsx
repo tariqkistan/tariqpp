@@ -13,11 +13,8 @@ const navLinks = [
   { href: "#contact", label: "Contact" },
 ];
 
-const sectionIds = navLinks.map((l) => l.href.slice(1));
-
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -25,26 +22,6 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { threshold: 0.35, rootMargin: "-80px 0px -40% 0px" }
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   useEffect(() => {
@@ -60,7 +37,7 @@ export function Navbar() {
         className={cn(
           "fixed top-0 z-50 w-full transition-all duration-300",
           scrolled
-            ? "border-b border-white/[0.08] bg-[#0a0a0e]/85 backdrop-blur-xl"
+            ? "border-b-2 border-ink bg-background/95 backdrop-blur-md shadow-sm"
             : "bg-transparent"
         )}
       >
@@ -68,47 +45,31 @@ export function Navbar() {
           className="mx-auto flex max-w-7xl items-center justify-end px-6 py-4 md:px-8"
           aria-label="Main navigation"
         >
-          <ul className="hidden items-center gap-6 md:flex">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className={cn(
-                    "font-mono text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors",
-                    activeSection === link.href.slice(1)
-                      ? "border-b-2 border-accent pb-1 text-accent"
-                      : "border-b-2 border-transparent pb-1 text-muted hover:text-foreground"
-                  )}
-                >
-                  {"// "}
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
           <button
             type="button"
-            className="relative z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+            className="relative z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
             <span
               className={cn(
-                "h-0.5 w-6 bg-foreground transition-all",
+                "h-0.5 w-6 transition-all",
+                scrolled || menuOpen ? "bg-foreground" : "bg-accent-on",
                 menuOpen && "translate-y-2 rotate-45"
               )}
             />
             <span
               className={cn(
-                "h-0.5 w-6 bg-foreground transition-all",
+                "h-0.5 w-6 transition-all",
+                scrolled || menuOpen ? "bg-foreground" : "bg-accent-on",
                 menuOpen && "opacity-0"
               )}
             />
             <span
               className={cn(
-                "h-0.5 w-6 bg-foreground transition-all",
+                "h-0.5 w-6 transition-all",
+                scrolled || menuOpen ? "bg-foreground" : "bg-accent-on",
                 menuOpen && "-translate-y-2 -rotate-45"
               )}
             />
@@ -122,7 +83,7 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-background/95 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center border-ink bg-background"
           >
             <motion.ul
               initial="hidden"
@@ -131,7 +92,7 @@ export function Navbar() {
               variants={{
                 visible: { transition: { staggerChildren: 0.08 } },
               }}
-              className="flex flex-col items-center gap-8"
+              className="flex flex-col items-center gap-8 md:gap-10"
             >
               {navLinks.map((link) => (
                 <motion.li
@@ -143,7 +104,7 @@ export function Navbar() {
                 >
                   <a
                     href={link.href}
-                    className="font-display text-3xl font-semibold text-gradient"
+                    className="font-display text-3xl font-black text-foreground md:text-4xl lg:text-5xl"
                     onClick={() => setMenuOpen(false)}
                   >
                     {link.label}

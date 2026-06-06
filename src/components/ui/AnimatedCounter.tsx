@@ -2,15 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { fadeUp, scrollViewport, defaultTransition } from "@/hooks/useScrollAnimation";
 
 interface AnimatedCounterProps {
   value: number;
   label: string;
   suffix?: string;
+  size?: "default" | "compact";
 }
 
-export function AnimatedCounter({ value, label, suffix = "" }: AnimatedCounterProps) {
+export function AnimatedCounter({ value, label, suffix = "", size = "default" }: AnimatedCounterProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, scrollViewport);
   const [count, setCount] = useState(0);
@@ -51,13 +53,30 @@ export function AnimatedCounter({ value, label, suffix = "" }: AnimatedCounterPr
       viewport={scrollViewport}
       variants={fadeUp}
       transition={defaultTransition}
-      className="text-center"
+      className={cn(
+        "text-center",
+        size === "compact" && "max-w-[10rem] mx-auto"
+      )}
     >
-      <div className="font-display text-4xl font-bold text-gradient md:text-5xl">
+      <div
+        className={cn(
+          "font-display font-black text-ink",
+          size === "default" && "text-5xl md:text-6xl lg:text-7xl",
+          size === "compact" && "text-3xl md:text-4xl lg:text-5xl"
+        )}
+      >
         {count}
         {suffix}
       </div>
-      <p className="mt-2 text-sm text-muted md:text-base">{label}</p>
+      <p
+        className={cn(
+          "mt-2 font-semibold uppercase tracking-wide text-muted md:mt-3",
+          size === "default" && "text-sm md:text-base",
+          size === "compact" && "text-[11px] md:text-xs"
+        )}
+      >
+        {label}
+      </p>
     </motion.div>
   );
 }

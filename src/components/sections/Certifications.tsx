@@ -11,11 +11,11 @@ export function Certifications() {
   const rest = certifications.filter((c) => !c.featured);
 
   return (
-    <section id="certifications" className="px-6 py-24 md:px-8 md:py-32">
+    <section id="certifications" className="border-y-2 border-ink bg-background px-6 py-24 md:px-8 md:py-32">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           title="Certifications"
-          subtitle="Credentials you can verify — AWS Associate-level certifications featured first"
+          subtitle="Credentials you can verify — flagship badges (AWS & Microsoft) featured first"
         />
 
         {featured.length > 0 && (
@@ -24,7 +24,7 @@ export function Certifications() {
             whileInView="visible"
             viewport={scrollViewport}
             variants={staggerContainer}
-            className="mb-10 grid gap-6 md:grid-cols-2"
+            className="mb-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
           >
             {featured.map((cert) => (
               <motion.div
@@ -45,7 +45,7 @@ export function Certifications() {
           whileInView="visible"
           viewport={scrollViewport}
           variants={staggerContainer}
-          className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-3 xl:grid-cols-5"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4"
         >
           {rest.map((cert) => (
             <motion.div
@@ -54,7 +54,7 @@ export function Certifications() {
                 hidden: { opacity: 0, y: 24 },
                 visible: { opacity: 1, y: 0 },
               }}
-              className="snap-center"
+              className="min-w-0"
             >
               <CertCard cert={cert} />
             </motion.div>
