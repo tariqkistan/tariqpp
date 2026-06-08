@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { SkillDetailPanel } from "@/components/ui/SkillNode";
 import { TechBrandIconTile } from "@/components/ui/TechIcon";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { getTechIconSlug } from "@/lib/tech-icons";
@@ -11,38 +10,31 @@ import {
   skills,
   skillCategories,
   categoryColors,
-  type SkillCategory,
+  isFlagshipSkill,
   type SkillNode,
 } from "@/data/skills";
 import { cn } from "@/lib/utils";
 import { fadeUp, scrollViewport, defaultTransition } from "@/hooks/useScrollAnimation";
 
-const MOBILE_SKILLS_INITIAL = 6;
-const MOBILE_SKILLS_STEP = 6;
+/** Initial batch of skill cards; "Load more" reveals the rest (all breakpoints). */
+const SKILLS_VISIBLE_INITIAL = 6;
+const SKILLS_VISIBLE_STEP = 6;
 
 export function Skills() {
-  const [selectedCategory, setSelectedCategory] = useState<SkillCategory | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [mobileSkillsCap, setMobileSkillsCap] = useState(MOBILE_SKILLS_INITIAL);
-
-  const visibleSkills = useMemo(
-    () =>
-      selectedCategory ? skills.filter((s) => s.category === selectedCategory) : skills,
-    [selectedCategory]
-  );
+  const [visibleSkillsCount, setVisibleSkillsCount] = useState(SKILLS_VISIBLE_INITIAL);
 
   const sortedSkills = useMemo(
-    () => [...visibleSkills].sort((a, b) => b.proficiency - a.proficiency),
-    [visibleSkills]
+    () => [...skills].sort((a, b) => b.proficiency - a.proficiency),
+    []
   );
 
-  const featuredIds = useMemo(() => {
-    const n = selectedCategory ? 1 : 3;
-    return new Set(sortedSkills.slice(0, Math.min(n, sortedSkills.length)).map((s) => s.id));
-  }, [sortedSkills, selectedCategory]);
+  const featuredIds = useMemo(
+    () => new Set(sortedSkills.slice(0, Math.min(3, sortedSkills.length)).map((s) => s.id)),
+    [sortedSkills]
+  );
 
   const stats = useMemo(() => {
-    const flagship = skills.filter((s) => s.proficiency >= 88).length;
+    const flagship = skills.filter((s) => isFlagshipSkill(s)).length;
     const maxYears = Math.max(...skills.map((s) => s.years), 0);
     return {
       tools: skills.length,
@@ -52,26 +44,11 @@ export function Skills() {
     };
   }, []);
 
-  const selectedSkill = skills.find((s) => s.id === selectedId) ?? null;
+  const hiddenBeyondCap = (index: number) =>
+    index >= visibleSkillsCount ? "hidden" : undefined;
 
-  const handleCategoryChange = (cat: SkillCategory | null) => {
-    setSelectedCategory(cat);
-    setSelectedId(null);
-  };
-
-  useEffect(() => {
-    setMobileSkillsCap(MOBILE_SKILLS_INITIAL);
-  }, [selectedCategory, sortedSkills.length]);
-
-  const toggleSkill = (id: string) => {
-    setSelectedId((prev) => (prev === id ? null : id));
-  };
-
-  const hiddenOnMobile = (index: number) =>
-    index >= mobileSkillsCap ? "max-md:hidden" : undefined;
-
-  const mobileRemaining = Math.max(0, sortedSkills.length - mobileSkillsCap);
-  const showMobileLoadMore = mobileRemaining > 0;
+  const loadMoreRemaining = Math.max(0, sortedSkills.length - visibleSkillsCount);
+  const showLoadMore = loadMoreRemaining > 0;
 
   return (
     <section
@@ -96,7 +73,7 @@ export function Skills() {
       <div className="relative mx-auto max-w-7xl">
         <SectionHeading
           title="Skills & Tech Stack"
-          subtitle="A recruiter-readable dossier: live counts, verified logos, and depth you can filter like a hiring manager skimming a CV in sixty seconds."
+          subtitle="A recruiter-readable dossier: live counts, verified logos, and depth at a glance across your full stack."
         />
 
         <motion.div
@@ -138,56 +115,6 @@ export function Skills() {
         </motion.div>
 
         <div
-          className="mb-8 rounded-leap border-2 border-ink bg-surface p-2 shadow-leap-sm"
-          role="tablist"
-          aria-label="Filter skills by category"
-        >
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={!selectedCategory}
-              onClick={() => handleCategoryChange(null)}
-              className={cn(
-                "rounded-leap px-4 py-2 text-sm font-bold transition-all",
-                !selectedCategory
-                  ? "border-2 border-ink bg-card text-ink shadow-leap-sm"
-                  : "border-2 border-transparent text-muted hover:border-ink/20 hover:text-foreground"
-              )}
-            >
-              All
-            </button>
-            {skillCategories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                role="tab"
-                aria-selected={selectedCategory === cat}
-                onClick={() =>
-                  handleCategoryChange(selectedCategory === cat ? null : cat)
-                }
-                className={cn(
-                  "rounded-leap px-4 py-2 text-sm font-bold transition-all",
-                  selectedCategory === cat
-                    ? cn(
-                        "border-2 border-ink shadow-leap-sm",
-                        cat === "Languages & Frameworks"
-                          ? "text-accent-on"
-                          : "text-[#0a0a0e]"
-                      )
-                    : "border-2 border-transparent text-muted hover:border-ink/20 hover:text-foreground"
-                )}
-                style={
-                  selectedCategory === cat ? { background: categoryColors[cat] } : undefined
-                }
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div
           className={cn(
             "columns-1 gap-x-4 [column-fill:_balance]",
             "sm:columns-2 lg:columns-2 xl:columns-3"
@@ -196,41 +123,34 @@ export function Skills() {
           {sortedSkills.map((skill, index) => (
             <div
               key={skill.id}
-              className={cn("mb-4 break-inside-avoid", hiddenOnMobile(index))}
+              className={cn("mb-4 break-inside-avoid", hiddenBeyondCap(index))}
             >
               <SkillCard
                 skill={skill}
                 index={index}
-                isSelected={selectedId === skill.id}
                 isFeatured={featuredIds.has(skill.id)}
-                onToggle={() => toggleSkill(skill.id)}
+                isFlagship={isFlagshipSkill(skill)}
               />
             </div>
           ))}
         </div>
 
-        {showMobileLoadMore && (
-          <div className="mt-6 flex justify-center md:hidden">
+        {showLoadMore && (
+          <div className="mt-8 flex justify-center">
             <button
               type="button"
               onClick={() =>
-                setMobileSkillsCap((c) =>
-                  Math.min(c + MOBILE_SKILLS_STEP, sortedSkills.length)
+                setVisibleSkillsCount((c) =>
+                  Math.min(c + SKILLS_VISIBLE_STEP, sortedSkills.length)
                 )
               }
               className="rounded-leap border-2 border-ink bg-accent px-8 py-3 font-display text-sm font-black uppercase tracking-wide text-accent-on shadow-leap-sm transition hover:bg-accent-dim hover:shadow-none"
             >
               Load more
               <span className="ml-2 font-mono text-xs font-bold normal-case text-ink/80">
-                (+{Math.min(MOBILE_SKILLS_STEP, mobileRemaining)} of {mobileRemaining})
+                (+{Math.min(SKILLS_VISIBLE_STEP, loadMoreRemaining)} of {loadMoreRemaining})
               </span>
             </button>
-          </div>
-        )}
-
-        {selectedSkill && (
-          <div className="mt-8">
-            <SkillDetailPanel node={selectedSkill} onClose={() => setSelectedId(null)} />
           </div>
         )}
       </div>
@@ -241,35 +161,33 @@ export function Skills() {
 function SkillCard({
   skill,
   index,
-  isSelected,
   isFeatured,
-  onToggle,
+  isFlagship,
 }: {
   skill: SkillNode;
   index: number;
-  isSelected: boolean;
   isFeatured: boolean;
-  onToggle: () => void;
+  isFlagship: boolean;
 }) {
   const accent = categoryColors[skill.category];
   const slug = getTechIconSlug(skill.id);
-  const tileSize = isFeatured ? 56 : 44;
+  const tileSize = isFeatured || isFlagship ? 56 : 44;
+  const showFeaturedRing = isFeatured && !isFlagship;
 
   return (
-    <motion.button
-      type="button"
+    <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={scrollViewport}
       variants={fadeUp}
       transition={{ ...defaultTransition, delay: Math.min(index * 0.04, 0.4) }}
-      onClick={onToggle}
       className={cn(
-        "group flex w-full flex-col rounded-leap border-2 border-ink bg-card text-left shadow-leap-sm transition-all hover:-translate-y-0.5 hover:shadow-leap",
-        isFeatured && !isSelected && "ring-2 ring-accent ring-offset-2 ring-offset-background",
-        isSelected && "ring-2 ring-ink ring-offset-2 ring-offset-background"
+        "group flex w-full flex-col rounded-leap border-2 border-ink bg-card text-left shadow-leap-sm",
+        isFlagship && "border-amber-600/90 bg-gradient-to-br from-card via-card to-amber-500/[0.08]",
+        showFeaturedRing && "ring-2 ring-accent ring-offset-2 ring-offset-background",
+        isFlagship &&
+          "ring-2 ring-amber-500 ring-offset-2 ring-offset-background shadow-[3px_3px_0_0_rgba(245,158,11,0.35)]"
       )}
-      aria-pressed={isSelected}
     >
       <div className="p-4 sm:p-5">
         <div className="flex items-start gap-3 sm:gap-4">
@@ -278,14 +196,21 @@ function SkillCard({
             <p
               className={cn(
                 "font-display font-black leading-tight text-ink",
-                isFeatured ? "text-xl sm:text-2xl" : "text-base sm:text-lg"
+                isFeatured || isFlagship ? "text-xl sm:text-2xl" : "text-base sm:text-lg"
               )}
             >
               {skill.name}
             </p>
-            <p className="mt-1 text-[11px] font-bold uppercase tracking-wider text-muted">
-              {skill.category}
-            </p>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-muted">
+                {skill.category}
+              </p>
+              {isFlagship && (
+                <span className="rounded-full border border-amber-700/40 bg-amber-400/25 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-amber-950 dark:text-amber-100">
+                  Flagship · ≥88%
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -313,6 +238,6 @@ function SkillCard({
           />
         </div>
       </div>
-    </motion.button>
+    </motion.div>
   );
 }
