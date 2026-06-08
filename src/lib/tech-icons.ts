@@ -15,6 +15,12 @@ const LEGACY_JSDELIVR_SLUGS = new Set([
   "microsoftazure",
   /** Not on live Simple Icons CDN; ships in pinned npm release. */
   "powerbi",
+  /** Removed from live CDN; still in pinned release (ChatGPT / OpenAI mark). */
+  "openai",
+  /** AWS Cognito SVG not on live Simple Icons CDN in some releases. */
+  "amazoncognito",
+  /** Yahoo SVG not in pinned v12.4.0; latest simple-icons package on jsDelivr has it. */
+  "yahoo",
 ]);
 
 export function isLegacySimpleIconSlug(slug: string): boolean {
@@ -102,10 +108,29 @@ const SLUG_BY_KEY: Record<string, string> = {
   "data modeling": "diagramsdotnet",
   recharts: "recharts",
   storybook: "storybook",
+  terraform: "terraform",
+  "amazon cognito": "amazoncognito",
+  cognito: "amazoncognito",
+  "next.js 14": "nextdotjs",
+  "yahoo finance api": "yahoo",
+  "yahoo finance": "yahoo",
+  "aws bedrock": "amazonwebservices",
+  "amazon bedrock": "amazonwebservices",
 };
 
 function normalizeKey(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+/** Local `/public` assets for tag pills when Simple Icons has no match. */
+const CUSTOM_TAG_ICON_BY_KEY: Record<string, string> = {
+  "bloomberg api": "/tech/bloomberg.png",
+};
+
+/** Optional raster/SVG in `public/` for a tech tag pill (e.g. Bloomberg wordmark). */
+export function getCustomTagIconSrc(name: string): string | null {
+  const key = normalizeKey(name);
+  return CUSTOM_TAG_ICON_BY_KEY[key] ?? null;
 }
 
 export function getTechIconSlug(idOrName: string): string | null {
@@ -119,6 +144,9 @@ export function getTechIconSlug(idOrName: string): string | null {
 }
 
 export function getTechIconUrl(slug: string, color = "white"): string {
+  if (slug === "yahoo") {
+    return "https://cdn.jsdelivr.net/npm/simple-icons/icons/yahoo.svg";
+  }
   if (isLegacySimpleIconSlug(slug)) {
     return `https://cdn.jsdelivr.net/npm/simple-icons@${LEGACY_SIMPLE_ICONS_VERSION}/icons/${slug}.svg`;
   }
@@ -175,6 +203,9 @@ export const TECH_BRAND_HEX: Record<string, string> = {
   mysql: "4479A1",
   databricks: "FF3621",
   powerbi: "F2C811",
+  terraform: "844FBA",
+  amazoncognito: "DD344C",
+  yahoo: "6001D2",
 };
 
 export function getTechBrandHex(slug: string): string | null {

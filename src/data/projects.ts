@@ -1,3 +1,9 @@
+/** Brand marks for AI / search platforms (Simple Icons slugs). Shown on the project card. */
+export interface FeaturedPlatform {
+  label: string;
+  iconSlug: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -10,17 +16,72 @@ export interface Project {
   repoUrl?: string;
   previewImage?: string;
   embedUrl?: string;
+  /** Optional row of platform logos (e.g. AI engines the product targets). */
+  featuredPlatforms?: FeaturedPlatform[];
 }
+
+/** Rendered side-by-side in one row (before the portfolio card). */
+export const PROJECT_IDS_PAIRED_ROW = ["ai-support", "dashora"] as const;
 
 export const projects: Project[] = [
   {
-    id: "smart-laser",
-    title: "Smart Laser — Full-Stack Maintenance CRM",
-    tagline: "End-to-end technician workflows",
+    id: "aelora",
+    title: "Aelora",
+    tagline: "AI Visibility Optimization Tool",
     description:
-      "Built a complete maintenance CRM for Perfect Laser Technologies that streamlined technician workflows end-to-end. Reduced maintenance turnaround time by 30% across the organization.",
-    tags: ["React", "PostgreSQL", "Node.js", "REST APIs"],
-    previewImage: "/projects/placeholder.svg",
+      "Aelora is a SaaS tool that analyzes website content and helps businesses improve their visibility on AI-driven search engines (Answer Engine Optimization or AEO).",
+    tags: [
+      "TypeScript",
+      "Next.js",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Vercel",
+      "AWS Lambda",
+    ],
+    demoUrl: "https://aelora-xi.vercel.app/",
+    repoUrl: "https://github.com/tariqkistan/Aelora",
+    previewImage: "/projects/aelora-preview.png",
+    featuredPlatforms: [
+      { label: "ChatGPT", iconSlug: "openai" },
+      { label: "Perplexity", iconSlug: "perplexity" },
+      { label: "Google AI Overviews", iconSlug: "google" },
+      { label: "Claude", iconSlug: "anthropic" },
+      { label: "Gemini", iconSlug: "googlegemini" },
+    ],
+  },
+  {
+    id: "quantra",
+    title: "Quantra",
+    tagline: "AI-Powered Shadow Portfolio Advisor",
+    description:
+      "Quantra is a modern fintech web application that allows users to manually track their investment portfolios, monitor performance against live market data, and receive AI-driven investment insights.",
+    tags: [
+      "Next.js 14",
+      "TypeScript",
+      "Tailwind CSS",
+      "AWS Lambda",
+      "Node.js",
+      "DynamoDB",
+      "API Gateway",
+      "Amazon Cognito",
+      "Terraform",
+      "Bloomberg API",
+      "Yahoo Finance API",
+      "AWS Bedrock",
+    ],
+    repoUrl: "https://github.com/tariqkistan/Quantra",
+    previewImage: "/projects/quantra-preview.png",
+  },
+  {
+    id: "auroradetect",
+    title: "AuroraDetect",
+    tagline: "Fraud Detection System",
+    description:
+      "AuroraDetect is a real-time fraud detection system that monitors financial transactions and identifies potentially fraudulent activities.",
+    tags: ["Next.js", "TypeScript", "AWS Lambda", "Kinesis", "DynamoDB", "SNS"],
+    demoUrl: "https://aurora-detect.vercel.app/",
+    repoUrl: "https://github.com/tariqkistan/AuroraDetect",
+    previewImage: "/projects/auroradetect-preview.png",
   },
   {
     id: "ai-support",
@@ -29,16 +90,6 @@ export const projects: Project[] = [
     description:
       "Engineered an AI-driven support system using a custom LLM and NLP pipeline that automated 60% of technical support queries — dramatically cutting operational overhead and response times.",
     tags: ["Python", "Custom LLM", "NLP", "TensorFlow"],
-    previewImage: "/projects/placeholder.svg",
-  },
-  {
-    id: "aurora-detect",
-    title: "Aurora Detect — Real-Time Fraud Detection System",
-    tagline: "Serverless, event-driven transaction monitoring",
-    description:
-      "Serverless, event-driven architecture that monitors financial transactions in real-time. Uses AWS Lambda and Kinesis to flag fraudulent activity, with DynamoDB for high-throughput storage and SNS for instant fraud alerts.",
-    tags: ["AWS Lambda", "Kinesis", "DynamoDB", "SNS", "Python"],
-    previewImage: "/projects/placeholder.svg",
   },
   {
     id: "dashora",
@@ -47,16 +98,6 @@ export const projects: Project[] = [
     description:
       "Aggregation engine that fetches and normalizes metrics from multiple WooCommerce stores and Google Analytics v4 accounts. Secure API layer with API Gateway and Secrets Manager for multi-client credential management.",
     tags: ["AWS Lambda", "API Gateway", "Secrets Manager", "Google Analytics v4", "WooCommerce"],
-    previewImage: "/projects/placeholder.svg",
-  },
-  {
-    id: "inventory",
-    title: "Distributed Inventory System — Multi-Branch Stock Sync",
-    tagline: "Real-time stock across branches",
-    description:
-      "Real-time inventory synchronization system across multiple retail branches. Enhanced data integrity and supply chain transparency for a national laser equipment supplier.",
-    tags: ["PHP", "PostgreSQL", "REST APIs", "Webhooks"],
-    previewImage: "/projects/placeholder.svg",
   },
   {
     id: "portfolio",
@@ -67,6 +108,5 @@ export const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     demoUrl: "#hero",
     repoUrl: "https://github.com/tariqkistan/tariqpp",
-    previewImage: "/projects/placeholder.svg",
   },
 ];

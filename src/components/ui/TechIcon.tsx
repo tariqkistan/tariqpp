@@ -3,6 +3,7 @@
 import Image from "next/image";
 import {
   contrastOnBrand,
+  getCustomTagIconSrc,
   getTechBrandHex,
   getTechIconSlug,
   getTechIconUrl,
@@ -153,6 +154,28 @@ export function TechLabel({
 
 /** Solid Simple Icons brand chip with tinted logo + title (project tags). */
 export function TechBrandPill({ name }: { name: string }) {
+  const customSrc = getCustomTagIconSrc(name);
+  if (customSrc) {
+    return (
+      <span
+        aria-label={name}
+        className={cn(
+          "inline-flex items-center gap-1.5 rounded-full border-2 border-ink/25 px-2.5 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,0.15)] dark:border-ink/30 dark:shadow-[2px_2px_0_0_rgba(255,255,255,0.12)]",
+          "bg-[#2800d0]"
+        )}
+      >
+        <Image
+          src={customSrc}
+          alt=""
+          width={120}
+          height={24}
+          className="h-5 w-auto max-w-[7.5rem] object-contain object-left"
+        />
+        <span className="text-xs font-bold leading-none text-white">API</span>
+      </span>
+    );
+  }
+
   const slug = getTechIconSlug(name);
   const brandHex = slug ? getTechBrandHex(slug) : null;
 
