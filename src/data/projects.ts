@@ -1,7 +1,10 @@
 /** Brand marks for AI / search platforms (Simple Icons slugs). Shown on the project card. */
 export interface FeaturedPlatform {
   label: string;
-  iconSlug: string;
+  /** Simple Icons slug when using CDN SVG. */
+  iconSlug?: string;
+  /** Local `/public` image (e.g. custom B&W mark). Omit `iconSlug` when set. */
+  iconSrc?: string;
 }
 
 export interface Project {
@@ -44,8 +47,7 @@ export const projects: Project[] = [
     featuredPlatforms: [
       { label: "ChatGPT", iconSlug: "openai" },
       { label: "Perplexity", iconSlug: "perplexity" },
-      { label: "Google AI Overviews", iconSlug: "google" },
-      { label: "Claude", iconSlug: "anthropic" },
+      { label: "Claude", iconSrc: "/tech/claude-mark-black.png" },
       { label: "Gemini", iconSlug: "googlegemini" },
     ],
   },

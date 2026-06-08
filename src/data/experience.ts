@@ -75,10 +75,4 @@ export const awards: AwardEntry[] = [
     imageAlt:
       "International World Robot Olympiad stage with teams, national flags, and a WE ARE THE FUTURE headline on screen.",
   },
-  {
-    id: "colours",
-    title: "Full Senior Colours — Greenside High School",
-    year: "2021",
-    description: "Awarded for excellence in Robotics, Chess, and Swimming.",
-  },
 ];

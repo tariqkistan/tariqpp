@@ -134,7 +134,7 @@ export function About() {
             viewport={scrollViewport}
             variants={slideInRight}
             transition={defaultTransition}
-            className="relative flex min-h-[280px] items-center justify-center lg:min-h-[360px]"
+            className="relative hidden min-h-[280px] items-center justify-center lg:flex lg:min-h-[360px]"
           >
             <div className="absolute inset-0 rounded-leap border-2 border-ink bg-card shadow-leap" />
             <motion.div

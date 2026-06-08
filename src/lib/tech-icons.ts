@@ -36,6 +36,7 @@ const SLUG_BY_KEY: Record<string, string> = {
   typescript: "typescript",
   react: "react",
   nextjs: "nextdotjs",
+  vercel: "vercel",
   vue: "vuedotjs",
   django: "django",
   tailwind: "tailwindcss",
@@ -160,6 +161,7 @@ export function getTechIconUrl(slug: string, color = "white"): string {
 export const TECH_BRAND_HEX: Record<string, string> = {
   react: "61DAFB",
   nextdotjs: "000000",
+  vercel: "000000",
   typescript: "3178C6",
   tailwindcss: "06B6D4",
   framer: "0055FF",

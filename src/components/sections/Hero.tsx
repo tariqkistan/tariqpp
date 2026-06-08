@@ -178,7 +178,7 @@ export function Hero() {
             TM
           </div>
 
-          <div className="rounded-leap border-[3px] border-ink bg-card shadow-[6px_6px_0_0_#ff934f] sm:border-4 sm:shadow-[8px_8px_0_0_#ff934f] lg:shadow-[10px_10px_0_0_#ff934f]">
+          <div className="rounded-leap border-[3px] border-ink bg-card shadow-[6px_6px_0_0_var(--shadow-edge)] sm:border-4 sm:shadow-[8px_8px_0_0_var(--shadow-edge)] lg:shadow-[10px_10px_0_0_var(--shadow-edge)]">
             <div className="flex items-center gap-3 border-b-2 border-ink bg-accent px-3 py-2.5 sm:px-4">
               <span className="flex gap-1.5" aria-hidden>
                 <span className="h-2.5 w-2.5 rounded-full border border-ink bg-[#ff5f57]" />

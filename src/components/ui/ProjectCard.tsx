@@ -73,9 +73,19 @@ export function ProjectCard({ project, index, compactLayout }: ProjectCardProps)
                   <li key={p.label} aria-label={p.label}>
                     <span
                       title={p.label}
-                      className="inline-flex h-12 w-12 items-center justify-center rounded-leap border-2 border-ink bg-white shadow-leap-sm dark:border-ink/40 dark:bg-zinc-100"
+                      className="inline-flex h-12 w-12 items-center justify-center rounded-leap border-2 border-ink bg-white p-1.5 shadow-leap-sm dark:border-ink/40 dark:bg-zinc-100"
                     >
-                      <TechIcon name={p.label} slug={p.iconSlug} size={24} iconTintHex="0F172A" />
+                      {p.iconSrc ? (
+                        <Image
+                          src={p.iconSrc}
+                          alt=""
+                          width={28}
+                          height={28}
+                          className="h-7 w-7 object-contain brightness-0"
+                        />
+                      ) : p.iconSlug ? (
+                        <TechIcon name={p.label} slug={p.iconSlug} size={24} iconTintHex="0F172A" />
+                      ) : null}
                     </span>
                   </li>
                 ))}
