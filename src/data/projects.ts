@@ -47,7 +47,7 @@ export const projects: Project[] = [
     featuredPlatforms: [
       { label: "ChatGPT", iconSlug: "openai" },
       { label: "Perplexity", iconSlug: "perplexity" },
-      { label: "Claude", iconSrc: "/tech/claude-mark-black.png" },
+      { label: "Claude", iconSlug: "claude" },
       { label: "Gemini", iconSlug: "googlegemini" },
     ],
   },

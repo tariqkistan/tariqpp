@@ -29,7 +29,7 @@ export function GradientButton({
       className={cn(
         base,
         variant === "primary" &&
-          "bg-ink text-[var(--on-ink)] shadow-[6px_6px_0_0_var(--shadow-edge)] hover:opacity-90 hover:shadow-[4px_4px_0_0_var(--shadow-edge)] hover:translate-x-0.5 hover:translate-y-0.5",
+          "bg-ink text-[var(--on-ink)] shadow-[6px_6px_0_0_var(--coral)] hover:opacity-90 hover:shadow-[4px_4px_0_0_var(--coral-dim)] hover:translate-x-0.5 hover:translate-y-0.5",
         variant === "secondary" &&
           "bg-accent text-accent-on shadow-leap-sm hover:bg-accent-dim hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5",
         className

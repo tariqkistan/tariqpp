@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { TechBrandIconTile } from "@/components/ui/TechIcon";
@@ -11,6 +11,7 @@ import {
   skillCategories,
   categoryColors,
   isFlagshipSkill,
+  type SkillCategory,
   type SkillNode,
 } from "@/data/skills";
 import { cn } from "@/lib/utils";
@@ -21,17 +22,23 @@ const SKILLS_VISIBLE_INITIAL = 6;
 const SKILLS_VISIBLE_STEP = 6;
 
 export function Skills() {
+  const [selectedCategory, setSelectedCategory] = useState<SkillCategory | null>(null);
   const [visibleSkillsCount, setVisibleSkillsCount] = useState(SKILLS_VISIBLE_INITIAL);
 
-  const sortedSkills = useMemo(
-    () => [...skills].sort((a, b) => b.proficiency - a.proficiency),
-    []
+  const visibleSkills = useMemo(
+    () => (selectedCategory ? skills.filter((s) => s.category === selectedCategory) : skills),
+    [selectedCategory]
   );
 
-  const featuredIds = useMemo(
-    () => new Set(sortedSkills.slice(0, Math.min(3, sortedSkills.length)).map((s) => s.id)),
-    [sortedSkills]
+  const sortedSkills = useMemo(
+    () => [...visibleSkills].sort((a, b) => b.proficiency - a.proficiency),
+    [visibleSkills]
   );
+
+  const featuredIds = useMemo(() => {
+    const n = selectedCategory ? 1 : 3;
+    return new Set(sortedSkills.slice(0, Math.min(n, sortedSkills.length)).map((s) => s.id));
+  }, [sortedSkills, selectedCategory]);
 
   const stats = useMemo(() => {
     const flagship = skills.filter((s) => isFlagshipSkill(s)).length;
@@ -43,6 +50,10 @@ export function Skills() {
       maxYears,
     };
   }, []);
+
+  useEffect(() => {
+    setVisibleSkillsCount(SKILLS_VISIBLE_INITIAL);
+  }, [selectedCategory]);
 
   const hiddenBeyondCap = (index: number) =>
     index >= visibleSkillsCount ? "hidden" : undefined;
@@ -113,6 +124,50 @@ export function Skills() {
           <AnimatedCounter value={stats.domains} label="Domains" size="compact" />
           <AnimatedCounter value={stats.flagship} label="≥88% depth" size="compact" />
         </motion.div>
+
+        <div
+          className="mb-8 rounded-leap border-2 border-ink bg-surface p-2 shadow-leap-sm"
+          role="group"
+          aria-label="Filter skills by category"
+        >
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedCategory(null)}
+              className={cn(
+                "rounded-leap px-4 py-2 text-sm font-bold transition-all",
+                !selectedCategory
+                  ? "border-2 border-ink bg-card text-ink shadow-leap-sm"
+                  : "border-2 border-transparent text-muted hover:border-ink/20 hover:text-foreground"
+              )}
+            >
+              All
+            </button>
+            {skillCategories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
+                className={cn(
+                  "rounded-leap px-4 py-2 text-sm font-bold transition-all",
+                  selectedCategory === cat
+                    ? cn(
+                        "border-2 border-ink shadow-leap-sm",
+                        cat === "Languages & Frameworks"
+                          ? "text-accent-on"
+                          : "text-[#0a0a0e]"
+                      )
+                    : "border-2 border-transparent text-muted hover:border-ink/20 hover:text-foreground"
+                )}
+                style={
+                  selectedCategory === cat ? { background: categoryColors[cat] } : undefined
+                }
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <div
           className={cn(
