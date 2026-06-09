@@ -139,6 +139,15 @@ body {
       );
   }
 
+  /* Subtle blueprint-style dots on navy hero — sits under mesh glow */
+  .hero-dot-texture {
+    background-image: radial-gradient(
+      rgba(248, 250, 252, 0.13) 1px,
+      transparent 1.5px
+    );
+    background-size: 40px 40px;
+  }
+
   .dark .mesh-bg {
     background: radial-gradient(
         at 20% 30%,

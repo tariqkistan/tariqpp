@@ -117,15 +117,6 @@ export function About() {
               <Highlight color="yellow">60%</Highlight> of support load, and inventory across
               branches — I don&apos;t just write code, I ship outcomes.
             </p>
-            <p className="text-xl leading-relaxed text-ink/85 md:text-2xl md:leading-relaxed">
-              Fast learner, faster builder. Next challenge might be{" "}
-              <Highlight color="blue">serverless on AWS</Highlight> or a polished{" "}
-              <Highlight color="green">React</Highlight> dashboard — same craft, every layer.
-            </p>
-
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/80">
-              Stack · Cloud · AI · Product
-            </p>
           </motion.div>
 
           <motion.div
@@ -141,7 +132,7 @@ export function About() {
               className="absolute h-40 w-40 rounded-full bg-accent/30 blur-3xl md:h-56 md:w-56"
               aria-hidden
             />
-            <pre className="relative z-10 max-w-full overflow-x-auto rounded-leap border-2 border-ink bg-card p-6 font-mono text-[11px] leading-relaxed text-ink shadow-leap-sm sm:text-sm md:p-8 md:text-base md:leading-relaxed">
+            <pre className="relative z-10 max-w-full overflow-x-auto rounded-leap border-2 border-zinc-600 bg-black p-6 font-mono text-[11px] leading-relaxed text-zinc-200 shadow-leap-sm sm:text-sm md:p-8 md:text-base md:leading-relaxed">
               <code>{`const tariq = {
   role: "Software Engineer",
   stack: ["React", "Python", "AWS"],

@@ -54,6 +54,7 @@ export function Hero() {
       id="hero"
       className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden border-b-2 border-ink bg-accent px-6 pb-16 pt-28 text-accent-on md:px-10 md:pb-20 md:pt-32"
     >
+      <div className="pointer-events-none absolute inset-0 hero-dot-texture" aria-hidden />
       <div className="pointer-events-none absolute inset-0 mesh-bg opacity-70" aria-hidden />
 
       <div
@@ -169,7 +170,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 24, rotate: -2 }}
           animate={{ opacity: 1, y: 0, rotate: -4 }}
           transition={{ type: "spring", stiffness: 120, damping: 18, delay: 0.05 }}
-          className="[grid-area:portrait] relative mx-auto w-full max-w-[min(72vw,280px)] justify-self-center sm:max-w-[300px] lg:mx-0 lg:max-w-none lg:justify-self-end"
+          className="[grid-area:portrait] relative mx-auto w-full max-w-[min(62vw,236px)] justify-self-center sm:max-w-[288px] lg:mx-0 lg:max-w-none lg:justify-self-end"
         >
           <div
             className="absolute -left-1 top-8 z-20 flex h-12 w-12 items-center justify-center border-2 border-ink bg-accent font-display text-sm font-black text-accent-on shadow-leap-sm sm:-left-2 sm:top-10 sm:h-16 sm:w-16 sm:text-lg lg:-left-4 lg:top-14 lg:h-[4.5rem] lg:w-[4.5rem] lg:text-xl"
@@ -196,7 +197,7 @@ export function Hero() {
                 alt={`${siteConfig.name}, software engineer`}
                 fill
                 className="object-cover object-top"
-                sizes="(max-width: 640px) 280px, (max-width: 1024px) 300px, 420px"
+                sizes="(max-width: 640px) 236px, (max-width: 1024px) 288px, 420px"
                 priority
               />
               {/* subtle “chrome” footer like a status strip */}
