@@ -12,7 +12,7 @@ export interface Certification {
   /** Small mark on compact cards — path under /public */
   issuerLogo?: string;
   /** Renders vector issuer mark; use instead of issuerLogo where supported */
-  issuerBrand?: "udemy" | "linux-foundation";
+  issuerBrand?: "udemy" | "linux-foundation" | "anthropic";
 }
 
 export const certifications: Certification[] = [
@@ -45,6 +45,25 @@ export const certifications: Certification[] = [
     badgeLabel: "AZ",
     featured: true,
     badgeImage: "/certifications/azure-data-engineer-associate.png",
+  },
+  /* Non-featured: display order is newest-first (see Certifications.tsx sort) */
+  {
+    id: "anthropic-ai-fluency",
+    name: "Certificate of Completion: AI Fluency for Small Businesses",
+    organization: "Anthropic",
+    dateEarned: "Jun 2026",
+    verifyUrl: "https://www.anthropic.com/",
+    badgeLabel: "A",
+    issuerBrand: "anthropic",
+  },
+  {
+    id: "anthropic-subagents",
+    name: "Certificate of Completion: Introduction to subagents",
+    organization: "Anthropic",
+    dateEarned: "Jun 2026",
+    verifyUrl: "https://www.anthropic.com/",
+    badgeLabel: "A",
+    issuerBrand: "anthropic",
   },
   {
     id: "udemy-js",

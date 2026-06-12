@@ -53,6 +53,31 @@ function LinuxFoundationIssuerGlyph({
   );
 }
 
+/** Anthropic mark (Simple Icons geometry) — dark on light card, light on flipped accent */
+function AnthropicIssuerGlyph({
+  className,
+  variant = "card",
+}: {
+  className?: string;
+  variant?: "card" | "accent";
+}) {
+  const fill = variant === "accent" ? "#f4f4f5" : "#141413";
+  return (
+    <svg
+      role="img"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden
+    >
+      <path
+        fill={fill}
+        d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"
+      />
+    </svg>
+  );
+}
+
 interface CertCardProps {
   cert: Certification;
   className?: string;
@@ -61,10 +86,14 @@ interface CertCardProps {
 export function CertCard({ cert, className }: CertCardProps) {
   const featured = cert.featured === true;
   const issuerMark = Boolean(
-    cert.issuerLogo || cert.issuerBrand === "udemy" || cert.issuerBrand === "linux-foundation"
+    cert.issuerLogo ||
+      cert.issuerBrand === "udemy" ||
+      cert.issuerBrand === "linux-foundation" ||
+      cert.issuerBrand === "anthropic"
   );
   const udemyIssuer = cert.issuerBrand === "udemy";
   const linuxFoundationIssuer = cert.issuerBrand === "linux-foundation";
+  const anthropicIssuer = cert.issuerBrand === "anthropic";
 
   return (
     <motion.div
@@ -111,7 +140,9 @@ export function CertCard({ cert, className }: CertCardProps) {
                     ? "h-11 w-11 border-[#A435F0]/40 bg-[#A435F0]/12"
                     : linuxFoundationIssuer
                       ? "h-11 w-11 border-[#0096d6]/40 bg-[#0096d6]/12"
-                      : "h-11 w-[7.25rem] border-ink bg-zinc-950 px-1.5 sm:w-[7.75rem]"
+                      : anthropicIssuer
+                        ? "h-11 w-11 border-zinc-400/60 bg-zinc-100"
+                        : "h-11 w-[7.25rem] border-ink bg-zinc-950 px-1.5 sm:w-[7.75rem]"
                 )}
                 aria-hidden
               >
@@ -119,6 +150,8 @@ export function CertCard({ cert, className }: CertCardProps) {
                   <UdemyIssuerGlyph className="h-7 w-7" />
                 ) : linuxFoundationIssuer ? (
                   <LinuxFoundationIssuerGlyph className="h-7 w-7" />
+                ) : anthropicIssuer ? (
+                  <AnthropicIssuerGlyph className="h-7 w-7" />
                 ) : (
                   <Image
                     src={cert.issuerLogo!}
@@ -163,13 +196,17 @@ export function CertCard({ cert, className }: CertCardProps) {
                   ? "h-16 w-16 border-white/35 bg-white/15"
                   : linuxFoundationIssuer
                     ? "h-16 w-16 border-white/35 bg-white/15"
-                    : "h-16 w-[8.75rem] border-accent-on/30 bg-zinc-950 sm:w-[9.25rem]"
+                    : anthropicIssuer
+                      ? "h-16 w-16 border-white/35 bg-white/15"
+                      : "h-16 w-[8.75rem] border-accent-on/30 bg-zinc-950 sm:w-[9.25rem]"
               )}
             >
               {udemyIssuer ? (
                 <UdemyIssuerGlyph className="h-10 w-10" />
               ) : linuxFoundationIssuer ? (
                 <LinuxFoundationIssuerGlyph className="h-10 w-10" variant="accent" />
+              ) : anthropicIssuer ? (
+                <AnthropicIssuerGlyph className="h-10 w-10" variant="accent" />
               ) : (
                 <Image
                   src={cert.issuerLogo!}
